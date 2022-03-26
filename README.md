@@ -174,7 +174,7 @@ dotnet publish -r win-x64 -c Release
 Total binary size: 1,038 KB
 ```
 
-## Attempt 11
+## Attempt 11 (-10 KB)
 Now that we've exhausted the switches I can find, it's time to go back look at the code.
 
 ### Smallest Limit
@@ -253,4 +253,29 @@ I will be using the following:
 </PropertyGroup>
 ```
 
-Looking at the dumps of what is linked, it's all the core library things like `System.Threading`, `System.Collections`, and things like the various primitive types. 
+Looking at the dumps of what is linked, it's all the core library things like `System.Threading`, `System.Collections`, and things like the various primitive types. I understand now why the snake game creator went to the toolchain and I can see things being linked.
+
+As for now, I dont understand enough about Interop, Importing DLLs, or want to get into messing with the toolchain. 
+
+## Result
+
+![image](images/GraphWithOriginal.png)
+*Chart via this [chart.xkcd example](https://codepen.io/timqian/pen/GRKqLaL)*
+
+| Attempts | Size (KB) |
+|----------|----------:|
+| Original | 62,091    |
+| 1        | 11,189    |
+| 2        | 11,189    |
+| 3        | 11,173    |
+| 4        | 4,348     |
+| 5        | 4,127     |
+| 6        | 4,058     |
+| 7        | 3,859     |
+| 8        | 1,167     |
+| 9        | 1,167     |
+| 10       | 1,038     |
+| 11       | 1,028     |
+| 12       | 1,028     |
+
+
