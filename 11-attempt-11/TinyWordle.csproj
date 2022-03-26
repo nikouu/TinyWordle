@@ -12,7 +12,8 @@
     <IlcFoldIdenticalMethodBodies>true</IlcFoldIdenticalMethodBodies>
 	<IlcDisableReflection>true</IlcDisableReflection>
 	<IlcTrimMetadata>true</IlcTrimMetadata>
-	<IlcGenerateStackTraceData>false</IlcGenerateStackTraceData>  
+	<IlcGenerateStackTraceData>false</IlcGenerateStackTraceData>
+	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 </PropertyGroup>
 	
   <ItemGroup>
@@ -21,6 +22,10 @@
 	
   <ItemGroup>
     <PackageReference Include="Microsoft.DotNet.ILCompiler" Version="7.0.0-*" />
+  </ItemGroup>
+	
+  <ItemGroup>
+    <Folder Include="BCLReplacements\" />
   </ItemGroup>
 
 </Project>
