@@ -232,3 +232,18 @@ dotnet publish -r win-x64 -c Release
 
 Total binary size: 1,028 KB
 ```
+
+### Swapping out `while` (-0 KB)
+I was thinking since I'm using `for` anyway, I could use the `for(;;)` infinite loop syntax instead of `while(true)`. Turns out, they both end up as the same thing for IL.
+
+## Attempt 12
+After spend awhile looking through the code myself, I figured it was time to see the actual output of the publish. Previously I had used the Visual Studio Performance Profiler to help me out to see what calls are being made where. But I'm now ready to see what I can see from the AOT output.
+
+I will be using the following:
+```xml
+<PropertyGroup>
+	<IlcGenerateDgmlFile>true</IlcGenerateDgmlFile>
+	<IlcGenerateMapFile>true</IlcGenerateMapFile>
+	<IlcDumpGeneratedIL>true</IlcDumpGeneratedIL>
+</PropertyGroup>
+```
