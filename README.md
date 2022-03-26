@@ -237,6 +237,10 @@ Total binary size: 1,028 KB
 I was thinking since I'm using `for` anyway, I could use the `for(;;)` infinite loop syntax instead of `while(true)`. Turns out, they both end up as the same thing for IL.
 
 ## Attempt 12
+Quick list of things that failed
+- Changing things from/to class/structs/records/etc
+- Removing the new `Random` and hard coding a value
+
 After spend awhile looking through the code myself, I figured it was time to see the actual output of the publish. Previously I had used the Visual Studio Performance Profiler to help me out to see what calls are being made where. But I'm now ready to see what I can see from the AOT output.
 
 I will be using the following:

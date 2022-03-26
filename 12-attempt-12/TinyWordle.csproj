@@ -15,12 +15,18 @@
 	<IlcGenerateStackTraceData>false</IlcGenerateStackTraceData>
 	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 
+	  <IlcGenerateDgmlFile>true</IlcGenerateDgmlFile>
+	  <IlcGenerateMapFile>true</IlcGenerateMapFile>
+	  <IlcDumpGeneratedIL>true</IlcDumpGeneratedIL>
+
+	
+
 	
 	  
 </PropertyGroup>
 	
   <ItemGroup>
-    <TrimmableAssembly Include="TinyWordle" />
+	  <TrimmableAssembly Include="TinyWordle" />
   </ItemGroup>
 	
   <ItemGroup>
