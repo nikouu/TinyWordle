@@ -4,11 +4,13 @@
     {
         private string[] _wordList;
         private GameUI _gameUI;
+        private Random _random;
 
         public GameManager(string[] wordList)
         {
             _wordList = wordList;
             _gameUI = new GameUI();
+            _random = new Random((uint)Environment.TickCount64);
         }
 
         public void Menu()
@@ -18,9 +20,9 @@
                 GameLoop();
                 _gameUI.ContinueScreen();
 
-                var shouldContinue = Console.ReadKey();
+                var shouldContinue = Console.ReadLine();
 
-                if (shouldContinue.KeyChar == 'q')
+                if (shouldContinue == "q")
                 {
                     return;
                 }
@@ -29,9 +31,8 @@
 
         private void GameLoop()
         {
-            var random = new Random();
-            var wordIndex = random.Next(_wordList.Length);
-            var word = _wordList[wordIndex];
+            var index = _random.Next() % _wordList.Length;
+            var word = _wordList[index];
 
             var game = new Game(word);
 
@@ -39,7 +40,7 @@
             {
                 _gameUI.DisplayGame(game.GuessedWords);
 
-                var guessedWord = Console.ReadLine()?.ToLower();
+                var guessedWord = Console.ReadLine();
 
                 if (!IsValidGuess(guessedWord))
                 {

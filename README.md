@@ -177,10 +177,58 @@ Total binary size: 1,038 KB
 ## Attempt 11
 Now that we've exhausted the switches I can find, it's time to go back look at the code.
 
-### Record Structs
+### Smallest Limit
+Without tinkering with the linker and the build toolchain, it seems the smallest value I can get an `.exe` is around **975 KB**. I tested this by removing all references to the actual TinyWordle code and just did a simple `Console.Writeline("");` in `program.cs`. 
+
+This means I think a good goal is to get the codebase to be sub 1 MB, or 1,024 KB - and according to the attempt 10 amount, only 14 bytes need to be shaved off. So let's see where we can lose them.
+
+### Record Structs (-0 KB)
 Specifically in reducing the amount of MSIL we create. First up, we're going to look at the `GuessedWord` and `GuessedLetter` `struct`s. Looking at [this example from SharpLap.io](https://sharplab.io/#v2:EYLgZgpghgLgrgJwgZwLTIgWygOxgSwGN0d8AHMiGZAGgBMQBqAHwAEAmARgFgAoVgMwACJFDoB7HABsAniIiFxCOkOQwEcQjCEBxOCgx0A6kroAKVpwAMQk8oCUAbj59Bq9Zu16DEY6fZ8AN58QqFCbpY2diqBQgDmVI5CAL4hYW7eyIbR7BbWQgDupvZCwbxhFbamQgC8habO5WGpvMlAA), a record produces a lot more code. 
 
 However, while this might impact the final size, for my two `struct` use case, converted them away from records did not change the resulting file size.
 
-### Random
+### Random (-0 KB)
 Originally I was selecting the word via creating a new `Random` object. However, you can also get a random number via a static call, `Random.Shared.Next()`. Replacing the object with the static call did not change the resulting file size.
+
+### Random v2 (-2 KB)
+Using the [random `struct`](https://github.com/MichalStrehovsky/SeeSharpSnake/blob/master/Game/Random.cs) from the [whole inspriation from this little project](https://medium.com/@MStrehovsky/building-a-self-contained-game-in-c-under-8-kilobytes-74c3cf60ea04) shaved off 2 KB.
+```
+dotnet publish -r win-x64 -c Release
+
+Total binary size: 1,036 KB
+```
+
+### No more `.ToLower()` (-5 KB)
+As long as our uses don't use any upper case they'll be fine. Shaves off 5 KB.
+```
+dotnet publish -r win-x64 -c Release
+
+Total binary size: 1,031 KB
+```
+
+### No more `.WriteLine()` (-1 KB)
+Since I need to use `Console.Write()` to colour specific characters, I can remove the `WriteLine()` calls and just append `/r/n` to the necessary calls.
+
+```
+dotnet publish -r win-x64 -c Release
+
+Total binary size: 1,030 KB
+```
+
+### No more `.Contains()` (- 512 B)
+A really small one, but just creating a basic method to replace the built in `string.Contains()` method. While it didn't save enough to make a difference on the rounded binary size. At least this time the size changed - unlike other attempts. 
+
+```
+dotnet publish -r win-x64 -c Release
+
+Total binary size: 1,030 KB
+```
+
+### No more `Console.ReadKey()` (-2 KB)
+To continue or quit the game after winning/losing, I opted to use a `ReadKey()` call so the user could go straight back into the game. That's now been replaced with a `ReadLine()` meaning the user has to hit enter to continue. But that's worth the saving.
+
+```
+dotnet publish -r win-x64 -c Release
+
+Total binary size: 1,028 KB
+```

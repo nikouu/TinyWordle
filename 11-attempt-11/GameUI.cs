@@ -1,43 +1,37 @@
-﻿using System.Text;
-
-namespace TinyWordle
+﻿namespace TinyWordle
 {
     public class GameUI
     {
         public void DisplayGame(GuessedWord[] guessedWords)
         {
             Console.Clear();
-            Console.WriteLine("TinyWordle");
+            Console.Write("TinyWordle\r\n");
 
             foreach (GuessedWord guessedWord in guessedWords)
             {
                 if (string.IsNullOrEmpty(guessedWord.Word))
                 {
-                    Console.WriteLine("#####");
+                    Console.Write("#####\r\n");
                 }
                 else
                 {
-                    var line = new StringBuilder();
                     foreach (var guessedLetter in guessedWord.GuessedLetters)
                     {
                         if (guessedLetter.IsCorrect)
                         {
                             Console.BackgroundColor = ConsoleColor.DarkGreen;
-                            Console.ForegroundColor = ConsoleColor.White;
                             Console.Write(guessedLetter.Letter);
                             Console.ResetColor();
                         }
                         else if (guessedLetter.IsRightLetterWrongPlace)
                         {
                             Console.BackgroundColor = ConsoleColor.DarkYellow;
-                            Console.ForegroundColor = ConsoleColor.White;
                             Console.Write(guessedLetter.Letter);
                             Console.ResetColor();
                         }
                         else
                         {
                             Console.BackgroundColor = ConsoleColor.DarkGray;
-                            Console.ForegroundColor = ConsoleColor.White;
                             Console.Write(guessedLetter.Letter);
                             Console.ResetColor();
                         }
@@ -48,24 +42,19 @@ namespace TinyWordle
             }
         }
 
-        public void DisplayInvalidInput()
-        {
-            Console.WriteLine("Not a valid input.");
-        }
-
         public void DisplayWonGame()
         {
-            Console.WriteLine("You win!");
+            Console.Write("\r\nYou win!");
         }
 
         public void DisplayLostGame()
         {
-            Console.WriteLine("You lose!");
+            Console.Write("\r\nYou lose!");
         }
 
         public void ContinueScreen()
         {
-            Console.WriteLine("Hit any key to play again. Hit 'q' to quit.");
+            Console.Write("\r\nHit any key to play again. Hit 'q' to quit.");
         }
     }
 }
