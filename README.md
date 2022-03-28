@@ -364,6 +364,29 @@ dotnet publish -r win-x64 -c Release
 Total binary size: 1,026 KB
 ```
 
+### Changing up the `Contains()` function
+```csharp
+// old one
+public static bool Contains(string stringToSearch, char characterToFind)
+{
+	for (int i = 0; i < stringToSearch.Length; i++)
+	{
+		if (stringToSearch[i] == characterToFind)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+// new one
+public static bool Contains2(string s, char c)
+{
+	return s.IndexOf(c) != -1;
+}
+```
+Didn't make a change, it seems the compliler knew smarter ways to do this
 
 ## Result
 
