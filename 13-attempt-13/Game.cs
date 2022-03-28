@@ -1,4 +1,6 @@
-﻿namespace TinyWordle
+﻿using System.Runtime.CompilerServices;
+
+namespace TinyWordle
 {
     public class Game
     {
