@@ -238,7 +238,7 @@ Total binary size: 1,028 KB
 ### Swapping out `while` (-0 KB)
 I was thinking since I'm using `for` anyway, I could use the `for(;;)` infinite loop syntax instead of `while(true)`. Turns out, they both end up as the same thing for IL.
 
-## Attempt 12
+## Attempt 12 (-0 KB)
 Quick list of things that failed
 - Changing things from/to class/structs/records/etc
 - Removing the new `Random` and hard coding a value
@@ -258,6 +258,20 @@ I will be using the following:
 Looking at the dumps of what is linked, it's all the core library things like `System.Threading`, `System.Collections`, and things like the various primitive types. I understand now why the snake game creator went to the toolchain and I can see things being linked.
 
 As for now, I dont understand enough about Interop, Importing DLLs, or want to get into messing with the toolchain. 
+
+## Attempt 13
+Still not with the toolchain, just ideas that come to me now and again.
+
+### Removing `Console.ResetColor()` (-0 KB)
+Attempted to remove the `Console.ResetColor()` calls with `Console.BackgroundColor = ConsoleColor.Black`
+
+### Removing `?` and `<Nullable>enable</Nullable>` (-0 KB)
+Removing nullable checks, and setting `<Nullable>disable</Nullable>` in the `csproj`.
+
+### Not using `new` for creating structs (-0 KB)
+The `Random`, `GuessedLetter`, and `GuessedWord` structs and using them like pritimives. However this didn't seem to change anything - unless I did something wrong 🤔
+
+
 
 ## Result
 
