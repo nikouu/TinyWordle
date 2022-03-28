@@ -282,6 +282,12 @@ dotnet publish -r win-x64 -c Release
 Total binary size: 1,027 KB
 ```
 
+### Using `Console.SetCursorPosition()` instead of `Console.Clear()` (-0 KB)
+Didn't work. Made it bigger by 2KB.
+
+### Overriding base calls (-0 KB)
+Thinking about overriding `ToString()` and similar. Looked at the changed via SharpLab.io and while the JIT ASM does get shorter, the trimmer removes them anyway since they aren't used by my custom types.
+
 
 ## Result
 
