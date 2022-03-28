@@ -288,6 +288,11 @@ Didn't work. Made it bigger by 2KB.
 ### Overriding base calls (-0 KB)
 Thinking about overriding `ToString()` and similar. Looked at the changed via SharpLab.io and while the JIT ASM does get shorter, the trimmer removes them anyway since they aren't used by my custom types.
 
+### More switches (-0 KB)
+Tried more [switches via the trimming documentation](https://github.com/dotnet/runtime/blob/main/docs/workflow/trimming/feature-switches.md#available-feature-switches)
+
+### `<TrimmableAssembly Include="System.Private.CoreLib" />` (-0 KB)
+Nope, no change/
 
 ## Result
 
