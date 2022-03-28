@@ -332,6 +332,38 @@ dotnet publish -r win-x64 -c Release
 Total binary size: 1,027 KB
 ```
 
+### Removing `System.SpanHelpers.SequenceEqual()` (-0 KB)
+
+To see if the user wants to quit, there's this call:
+```csharp
+shouldContinue == "q"
+```
+
+Which according to sharplab.io turns into:
+```
+call System.SpanHelpers.SequenceEqual(Byte ByRef, Byte ByRef, UIntPtr)
+```
+
+So to get around that I made it simplier
+```csharp
+shouldContinue[0] == 'q'
+```
+
+Which made it some simple compares in IL assembly
+
+However, it didn't make a difference because I think `System.SpanHelpers` is part of the core so they're loaded in anyway.
+
+###  `[MethodImpl(MethodImplOptions.AggressiveInlining)]` (-1 KB)
+From my super limited understanding, inlining can increase code side as code is copy/pasted by the compliler to throw it right in sequential order instead of jumping all around the code base for the next call. 
+
+However, it seems in my case, it has reduced my code size when put on particular functions. 
+
+```
+dotnet publish -r win-x64 -c Release
+
+Total binary size: 1,026 KB
+```
+
 
 ## Result
 

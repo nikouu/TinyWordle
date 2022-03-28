@@ -1,4 +1,6 @@
-﻿namespace TinyWordle
+﻿using System.Runtime.CompilerServices;
+
+namespace TinyWordle
 {
     public class GameManager
     {
@@ -13,6 +15,7 @@
             _random = new Random((uint)Environment.TickCount64);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Menu()
         {
             while (true)
@@ -29,6 +32,7 @@
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void GameLoop()
         {
             var index = _random.Next() % _wordList.Length;
