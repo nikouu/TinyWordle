@@ -9,7 +9,7 @@
 
             foreach (GuessedWord guessedWord in guessedWords)
             {
-                if (string.IsNullOrEmpty(guessedWord.Word))
+                if (guessedWord.Word == null)
                 {
                     Console.Write("#####\r\n");
                 }
