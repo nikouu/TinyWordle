@@ -21,7 +21,7 @@ namespace TinyWordle
             while (true)
             {
                 GameLoop();
-                _gameUI.ContinueScreen();
+                Console.Write("\r\nHit any key to play again. Hit 'q' to quit.");
 
                 var shouldContinue = Console.ReadLine();
 
@@ -40,50 +40,31 @@ namespace TinyWordle
 
             var game = new Game(word);
 
-            while (true)
-            {
-                _gameUI.DisplayGame(game.GuessedWords);
+            _gameUI.DisplayGame(game.GuessedWords);
 
+            while (true)
+            {           
                 var guessedWord = Console.ReadLine();
 
-                if (!IsValidGuess(guessedWord))
+                if (guessedWord.Length != 5)
                 {
                     continue;
                 }
 
                 var result = game.Guess(guessedWord);
+                _gameUI.DisplayGame(game.GuessedWords);
 
-                if (result == State.Playing)
+                if (result == State.Won)
                 {
-                    continue;
-                }
-                else if (result == State.Won)
-                {
-                    _gameUI.DisplayGame(game.GuessedWords);
-                    _gameUI.DisplayWonGame();
+                    Console.Write("\r\nYou win!");
                     break;
                 }
                 else if (result == State.Lost)
                 {
-                    _gameUI.DisplayGame(game.GuessedWords);
-                    _gameUI.DisplayLostGame();
+                     Console.Write("\r\nYou lose!");
                     break;
                 }
             }
-        }
-
-        private bool IsValidGuess(string guess)
-        {
-            if (guess == null)
-            {
-                return false;
-            }
-            else if (guess.Length != 5)
-            {
-                return false;
-            }
-
-            return true;
         }
     }
 }

@@ -39,20 +39,5 @@
                 }
             }
         }
-
-        public void DisplayWonGame()
-        {
-            Console.Write("\r\nYou win!");
-        }
-
-        public void DisplayLostGame()
-        {
-            Console.Write("\r\nYou lose!");
-        }
-
-        public void ContinueScreen()
-        {
-            Console.Write("\r\nHit any key to play again. Hit 'q' to quit.");
-        }
     }
 }

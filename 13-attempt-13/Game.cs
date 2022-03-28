@@ -12,6 +12,7 @@ namespace TinyWordle
         {
             _word = word;
             _attempts = 0;
+            GuessedWords = new GuessedWord[6];
         }
 
         public State Guess(string guessedWord)
@@ -57,11 +58,6 @@ namespace TinyWordle
             }
 
             return false;
-        }
-
-        public static bool Contains2(string s, char c)
-        {
-            return s.IndexOf(c) != -1;
         }
     }
 }
