@@ -49,7 +49,7 @@ namespace TinyWordle
         // https://stackoverflow.com/a/54129140
         public static bool Contains(string stringToSearch, char characterToFind)
         {
-            for (int i = 0; i < stringToSearch.Length; i++)
+            for (int i = 0; i < 5; i++)
             {
                 if (stringToSearch[i] == characterToFind)
                 {
