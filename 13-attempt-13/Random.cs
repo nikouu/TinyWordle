@@ -1,4 +1,6 @@
-﻿namespace TinyWordle
+﻿using System.Runtime.CompilerServices;
+
+namespace TinyWordle
 {
     // https://github.com/MichalStrehovsky/SeeSharpSnake/blob/master/Game/Random.cs
     struct Random
@@ -10,6 +12,7 @@
             _val = seed;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint Next() => _val = (1103515245 * _val + 12345) % 2147483648;
     }
 }
