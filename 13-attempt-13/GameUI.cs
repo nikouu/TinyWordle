@@ -20,17 +20,17 @@
                         if (guessedLetter.IsCorrect)
                         {
                             Console.BackgroundColor = ConsoleColor.DarkGreen;
-                            Console.Write(guessedLetter.Letter);
+                            Console.Write(guessedLetter.Letter.ToString());
                         }
                         else if (guessedLetter.IsRightLetterWrongPlace)
                         {
                             Console.BackgroundColor = ConsoleColor.DarkYellow;
-                            Console.Write(guessedLetter.Letter);
+                            Console.Write(guessedLetter.Letter.ToString());
                         }
                         else
                         {
                             Console.BackgroundColor = ConsoleColor.DarkGray;
-                            Console.Write(guessedLetter.Letter);                            
+                            Console.Write(guessedLetter.Letter.ToString());                            
                         }
                     }
 
