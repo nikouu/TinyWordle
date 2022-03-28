@@ -294,6 +294,45 @@ Tried more [switches via the trimming documentation](https://github.com/dotnet/r
 ### `<TrimmableAssembly Include="System.Private.CoreLib" />` (-0 KB)
 Nope, no change/
 
+### Custom app.manifest (-512 B)
+Embedded in the binaries is the manifest file. Not entirely sure what it does, but the game runs without it.
+Did this by adding a new app.manifest and putting nothing it, then putting this in the `.csproj` file:
+```xml
+<ApplicationManifest>app.manifest</ApplicationManifest>
+```
+
+![image](images/manifest.png)
+
+Viewed by opening the `.dll` into Visual Studio
+
+```xml
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
+  <assemblyIdentity version="1.0.0.0" name="MyApplication.app"/>
+  <trustInfo xmlns="urn:schemas-microsoft-com:asm.v2">
+    <security>
+      <requestedPrivileges xmlns="urn:schemas-microsoft-com:asm.v3">
+        <requestedExecutionLevel level="asInvoker" uiAccess="false"/>
+      </requestedPrivileges>
+    </security>
+  </trustInfo>
+</assembly>
+```
+
+Remember to delete the obj folder after changing the manifest or else 
+```
+LINK : fatal error LNK1123: failure during conversion to COFF: file invalid or corrupt
+```
+
+Sadly not enough to change the KB rounding:
+```
+dotnet publish -r win-x64 -c Release
+
+Total binary size: 1,027 KB
+```
+
+
 ## Result
 
 ![image](images/GraphWithOriginal.png)
