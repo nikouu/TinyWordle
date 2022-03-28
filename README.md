@@ -271,6 +271,16 @@ Removing nullable checks, and setting `<Nullable>disable</Nullable>` in the `csp
 ### Not using `new` for creating structs (-0 KB)
 The `Random`, `GuessedLetter`, and `GuessedWord` structs and using them like pritimives. However this didn't seem to change anything - unless I did something wrong 🤔
 
+### Not using `string.IsNullOrEmpty()` (-0 KB)
+Opting to use manual empty string and null checks. However I think because they are part of the core library that even if the classes/methods aren't used, theyre included. 
+
+### Removing the `Console.Write(char value)` call with a `Console.Write(string? value)` call (-1 KB)
+Each letter is printed via the `char` implementation of `Console.Write()` however the `string` version is also present. And as the `.ToString()` method is part of the core library and not trimmed, then we can make each printed `char` a `string`.
+```
+dotnet publish -r win-x64 -c Release
+
+Total binary size: 1,027 KB
+```
 
 
 ## Result
@@ -295,3 +305,6 @@ The `Random`, `GuessedLetter`, and `GuessedWord` structs and using them like pri
 | 12       | 1,028     |
 
 
+## Future ideas
+- Taking advantage of the toolchain to bring in only core functions that are needed
+- Use `stackalloc`?
