@@ -19,7 +19,7 @@
 	  <IlcGenerateDgmlFile>true</IlcGenerateDgmlFile>
 	  <IlcGenerateMapFile>true</IlcGenerateMapFile>
 	  <IlcDumpGeneratedIL>true</IlcDumpGeneratedIL>
-	  <ApplicationManifest>app.manifest</ApplicationManifest>  
+	  <ApplicationManifest>app.manifest</ApplicationManifest>
 
 </PropertyGroup>
 	
