@@ -201,7 +201,7 @@ Total binary size: 1,036 KB
 ```
 
 ### No more `.ToLower()` (-5 KB)
-As long as our uses don't use any upper case they'll be fine. Shaves off 5 KB.
+As long as our user doesn't use any upper case they'll be fine. Shaves off 5 KB.
 ```
 dotnet publish -r win-x64 -c Release
 
