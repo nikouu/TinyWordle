@@ -388,6 +388,24 @@ public static bool Contains2(string s, char c)
 ```
 Didn't make a change, it seems the compliler knew smarter ways to do this
 
+## Attempt 14
+This attempt uses [dnSpy](https://github.com/dnSpy/dnSpy) (which is now outdated, and you can use [ILSpy](https://github.com/icsharpcode/ILSpy)) to check out what is being bundled with the `.exe`.
+
+It also is the attempt where coding practices are thrown out the window.
+
+### Removing any structs from user code (-0 KB)
+Nope. Didn't help. Was hoping that even if structs were part of the core library that the generated binary would be less. Seems not. 
+
+### Removing type references to `char` (-0 KB)
+Also didn't help. 
+
+### Moving to single file
+Actually made it larger
+
+### Taking the internal implementation of dotnet functions
+Theoretrically this then gets rid of the guards and other overheads
+
+
 ## Result
 
 ![image](images/GraphWithOriginal.png)
@@ -408,8 +426,10 @@ Didn't make a change, it seems the compliler knew smarter ways to do this
 | 10       | 1,038     |
 | 11       | 1,028     |
 | 12       | 1,028     |
+| 13       | 1,026     |
 
 
 ## Future ideas
 - Taking advantage of the toolchain to bring in only core functions that are needed
 - Use `stackalloc`?
+- using a decomplilation tool to look at the IL and imports that are packaged up and see which from the non core library can be removed
