@@ -403,7 +403,7 @@ Also didn't help.
 Actually made it larger
 
 ### Taking the internal implementation of dotnet functions
-Theoretrically this then gets rid of the guards and other overheads
+Theoretrically this then gets rid of the guards and other overheads. But turns out this is way too above what I'm doing because I have to unravel lots of stuff
 
 
 ## Result
