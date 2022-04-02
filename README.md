@@ -259,7 +259,7 @@ Looking at the dumps of what is linked, it's all the core library things like `S
 
 As for now, I dont understand enough about Interop, Importing DLLs, or want to get into messing with the toolchain. 
 
-## Attempt 13
+## Attempt 13 (-0 KB)
 Still not with the toolchain, just ideas that come to me now and again.
 
 ### Removing `Console.ResetColor()` (-0 KB)
@@ -388,7 +388,7 @@ public static bool Contains2(string s, char c)
 ```
 Didn't make a change, it seems the compliler knew smarter ways to do this
 
-## Attempt 14
+## Attempt 14 (-0 KB)
 This attempt uses [dnSpy](https://github.com/dnSpy/dnSpy) (which is now outdated, and you can use [ILSpy](https://github.com/icsharpcode/ILSpy)) to check out what is being bundled with the `.exe`.
 
 It also is the attempt where coding practices are thrown out the window.
@@ -427,9 +427,10 @@ Theoretrically this then gets rid of the guards and other overheads. But turns o
 | 11       | 1,028     |
 | 12       | 1,028     |
 | 13       | 1,026     |
+| 14       | 1,026     |
 
 
 ## Future ideas
 - Taking advantage of the toolchain to bring in only core functions that are needed
 - Use `stackalloc`?
-- using a decomplilation tool to look at the IL and imports that are packaged up and see which from the non core library can be removed
+- ~~using a decomplilation tool to look at the IL and imports that are packaged up and see which from the non core library can be removed~~
