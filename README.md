@@ -405,8 +405,8 @@ Actually made it larger
 ### Taking the internal implementation of dotnet functions
 Theoretrically this then gets rid of the guards and other overheads. But turns out this is way too above what I'm doing because I have to unravel lots of stuff
 
-## Attempt 15 (-0 KB)
-The light linker playing.
+## Attempt 15 (-16 KB)
+The light linker playing round, trying flags from the [MSVC linker documentation](https://docs.microsoft.com/en-us/cpp/build/reference/linker-options?view=msvc-170). I do try a lot more options than written, but mostly with zero effect.
 
 ### `DYNAMICBASE:NO` (-15 KB)
 Adding some linker arguments, specifically turning off address space layout randomisation via [`DYNAMICBASE:NO`](https://docs.microsoft.com/en-us/cpp/build/reference/dynamicbase-use-address-space-layout-randomization?view=msvc-170) to the `csproj` file.
@@ -419,6 +419,22 @@ Adding some linker arguments, specifically turning off address space layout rand
 dotnet publish -r win-x64 -c Release
 
 Total binary size: 1,011 KB
+```
+
+### `/SUBSYSTEM:CONSOLE` (-0 KB)
+Nothing out of messing with the [`subsystem`](https://docs.microsoft.com/en-us/cpp/build/reference/subsystem?view=msvc-170) flag.
+
+### `/ASSEMBLYDEBUG:DISABLE` (-0 KB)
+Nothing out of messing with the [`assemblydebug`](https://docs.microsoft.com/en-us/cpp/build/reference/assemblydebug-add-debuggableattribute?view=msvc-170) flag.
+
+### `/FILEALIGN:2` (-1 KB)
+From what I know from alignment, it's about lining up memory sizes. Maybe something like, if a bit is stored, but the alignment is 1 byte, then that 1 bit will take the space of 1 byte. 
+According to the [documentation](https://docs.microsoft.com/en-us/cpp/build/reference/filealign?view=msvc-170), this needs to be a power of 2, and 0 makes it worse.
+
+```
+dotnet publish -r win-x64 -c Release
+
+Total binary size: 1,010 KB
 ```
 
 
@@ -444,6 +460,7 @@ Total binary size: 1,011 KB
 | 12       | 1,028     |
 | 13       | 1,026     |
 | 14       | 1,026     |
+| 15       | 1,010     |
 
 
 ## Future ideas

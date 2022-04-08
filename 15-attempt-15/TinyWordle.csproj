@@ -36,7 +36,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<LinkerArg Include="/DYNAMICBASE:NO" />
+		<LinkerArg Include="/DYNAMICBASE:NO /FILEALIGN:2" />
 	</ItemGroup>
 
 </Project>
