@@ -405,6 +405,22 @@ Actually made it larger
 ### Taking the internal implementation of dotnet functions
 Theoretrically this then gets rid of the guards and other overheads. But turns out this is way too above what I'm doing because I have to unravel lots of stuff
 
+## Attempt 15 (-0 KB)
+The light linker playing.
+
+### `DYNAMICBASE:NO` (-15 KB)
+Adding some linker arguments, specifically turning off address space layout randomisation via [`DYNAMICBASE:NO`](https://docs.microsoft.com/en-us/cpp/build/reference/dynamicbase-use-address-space-layout-randomization?view=msvc-170) to the `csproj` file.
+```csharp
+<ItemGroup>
+	<LinkerArg Include="/DYNAMICBASE:NO" />
+</ItemGroup>
+```
+```
+dotnet publish -r win-x64 -c Release
+
+Total binary size: 1,011 KB
+```
+
 
 ## Result
 
