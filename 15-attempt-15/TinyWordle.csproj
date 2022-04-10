@@ -21,6 +21,8 @@
 		<IlcDumpGeneratedIL>true</IlcDumpGeneratedIL>
 		<ApplicationManifest>app.manifest</ApplicationManifest>
 
+
+		
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -36,7 +38,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<LinkerArg Include="/DYNAMICBASE:NO /FILEALIGN:2" />
+		<LinkerArg Include="/DYNAMICBASE:NO /FILEALIGN:1 /VERBOSE" />
 	</ItemGroup>
 
 </Project>
