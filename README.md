@@ -259,7 +259,7 @@ Looking at the dumps of what is linked, it's all the core library things like `S
 
 As for now, I dont understand enough about Interop, Importing DLLs, or want to get into messing with the toolchain. 
 
-## Attempt 13 (-0 KB)
+## Attempt 13 (-1 KB)
 Still not with the toolchain, just ideas that come to me now and again.
 
 ### Removing `Console.ResetColor()` (-0 KB)
@@ -458,7 +458,7 @@ Total binary size: 1,010 KB
 | 10       | 1,038     |
 | 11       | 1,028     |
 | 12       | 1,028     |
-| 13       | 1,026     |
+| 13       | 1,027     |
 | 14       | 1,026     |
 | 15       | 1,010     |
 
