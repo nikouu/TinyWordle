@@ -17,17 +17,7 @@ namespace TinyWordle
 
         public State Guess(string guessedWord)
         {
-            if (guessedWord == _word)
-            {
-                return State.Won;
-            }
-            
             _attempts++;
-
-            if (_attempts >= 6)
-            {
-                return State.Lost;
-            }
 
             GuessedWords[_attempts - 1] = new GuessedWord
             {
@@ -41,7 +31,21 @@ namespace TinyWordle
                     new GuessedLetter { Letter = guessedWord[3], IsRightLetterWrongPlace = Contains(_word, guessedWord[3]), IsCorrect = guessedWord[3] == _word[3] },
                     new GuessedLetter { Letter = guessedWord[4], IsRightLetterWrongPlace = Contains(_word, guessedWord[4]), IsCorrect = guessedWord[4] == _word[4] }
                 }
-            };                            
+            };
+
+            if (guessedWord == _word)
+            {
+                return State.Won;
+            }
+            
+           
+
+            if (_attempts >= 6)
+            {
+                return State.Lost;
+            }
+
+                                        
 
             return State.Playing;
         }
