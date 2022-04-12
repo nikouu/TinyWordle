@@ -437,10 +437,9 @@ dotnet publish -r win-x64 -c Release
 Total binary size: 1,010 KB
 ```
 
-
 ## Result
 
-![image](images/GraphWithOriginal.png)
+![image](images/FullGraph.png)
 *Chart via this [chart.xkcd example](https://codepen.io/timqian/pen/GRKqLaL)*
 
 | Attempts | Size (KB) | Reduction |
@@ -457,10 +456,10 @@ Total binary size: 1,010 KB
 | 9        |     1,167 |    98.12% |
 | 10       |     1,038 |    98.33% |
 | 11       |     1,028 |    98.34% |
-| 12       |     1,028 |           |
-| 13       |     1,027 |           |
-| 14       |     1,026 |           |
-| 15       |     1,010 |           |
+| 12       |     1,028 |    98.34% |
+| 13       |     1,027 |    98.35% |
+| 14       |     1,026 |    98.35% |
+| 15       |     1,010 |    98.37% |
 
 
 ## Future ideas
