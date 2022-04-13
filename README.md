@@ -427,17 +427,14 @@ Nothing out of messing with the [`subsystem`](https://docs.microsoft.com/en-us/c
 ### `/ASSEMBLYDEBUG:DISABLE` (-0 KB)
 Nothing out of messing with the [`assemblydebug`](https://docs.microsoft.com/en-us/cpp/build/reference/assemblydebug-add-debuggableattribute?view=msvc-170) flag.
 
-### `/FILEALIGN:2` (-1 KB)
+### `/FILEALIGN:2` (-0 KB)
 From what I know from alignment, it's about lining up memory sizes. Maybe something like, if a bit is stored, but the alignment is 1 byte, then that 1 bit will take the space of 1 byte. 
 According to the [documentation](https://docs.microsoft.com/en-us/cpp/build/reference/filealign?view=msvc-170), this needs to be a power of 2, and 0 makes it worse.
 
-```
-dotnet publish -r win-x64 -c Release
-
-Total binary size: 1,010 KB
-```
+**Except** while the `.exe` was produced. It couldn't run.
 
 ## Result
+Go check out the value yourself over at the [releases area for attempt 15](https://github.com/nikouu/TinyWordle/releases/tag/15-Attempt)
 
 ![image](images/FullGraph.png)
 *Chart via this [chart.xkcd example](https://codepen.io/timqian/pen/GRKqLaL)*
@@ -459,7 +456,9 @@ Total binary size: 1,010 KB
 | 12       |     1,028 |    98.34% |
 | 13       |     1,027 |    98.35% |
 | 14       |     1,026 |    98.35% |
-| 15       |     1,010 |    98.37% |
+| 15       |     1,011 |    98.37% |
+
+
 
 
 ## Future ideas
