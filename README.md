@@ -1,5 +1,5 @@
 # TinyWordle
-A C# console clone of Wordle, but with an attempt to make the binary really tiny.
+A C# console clone of Wordle, but with an attempt to make the binary really tiny, like 🐘**62,091 KB**🐘 to 🤏**1,011 KB**🤏 tiny.
 
 Based off the popular [Wordle game](https://www.nytimes.com/games/wordle/index.html) where the rule are:
 
