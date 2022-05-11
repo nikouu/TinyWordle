@@ -459,9 +459,10 @@ Go check out the value yourself over at the [releases area for attempt 15](https
 | 15       |     1,011 |    98.37% |
 
 
-
-
 ## Future ideas
 - Taking advantage of the toolchain to bring in only core functions that are needed
 - Use `stackalloc`?
 - ~~using a decomplilation tool to look at the IL and imports that are packaged up and see which from the non core library can be removed~~
+
+## Secret Attempt 16 👀
+[Native AOT is now present as of .NET 7 Preview 3](https://devblogs.microsoft.com/dotnet/announcing-dotnet-7-preview-3/#faster-lighter-apps-with-native-aot) and it might be fun to see how all of the above work translates into this new version.
