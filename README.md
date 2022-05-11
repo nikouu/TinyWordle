@@ -1,4 +1,4 @@
-# TinyWordle
+# TinyWordle: 62,091 KB to 1,011 KB
 A C# console clone of Wordle, but with an attempt to make the binary really tiny.
 
 Based off the popular [Wordle game](https://www.nytimes.com/games/wordle/index.html) where the rule are:
