@@ -465,4 +465,11 @@ Go check out the value yourself over at the [releases area for attempt 15](https
 - ~~using a decomplilation tool to look at the IL and imports that are packaged up and see which from the non core library can be removed~~
 
 ## Secret Attempt 16 👀
-[Native AOT is now present as of .NET 7 Preview 3](https://devblogs.microsoft.com/dotnet/announcing-dotnet-7-preview-3/#faster-lighter-apps-with-native-aot) and it might be fun to see how all of the above work translates into this new version.
+[Native AOT is now kinda present as of .NET 7 Preview 3](https://devblogs.microsoft.com/dotnet/announcing-dotnet-7-preview-3/#faster-lighter-apps-with-native-aot) and it might be fun to see how all of the above work translates into this new version.
+
+Interestingly using SDK Version: 7.0.100-preview.4.22252.9 outputs a larger binary for the 00-original code. 
+
+|      | New       | Old       |
+| ---- | --------- | --------- |
+| Size | 64,275 KB | 62,091 KB |
+
