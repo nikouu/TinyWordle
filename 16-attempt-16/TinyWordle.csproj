@@ -1,11 +1,44 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net7.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-	<PublishSingleFile>true</PublishSingleFile>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net7.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>disable</Nullable>
+		<PublishTrimmed>true</PublishTrimmed>
+		<TrimMode>link</TrimMode>
+		<InvariantGlobalization>true</InvariantGlobalization>
+		<IlcOptimizationPreference>Size</IlcOptimizationPreference>
+		<IlcFoldIdenticalMethodBodies>true</IlcFoldIdenticalMethodBodies>
+		<IlcDisableReflection>true</IlcDisableReflection>
+		<IlcTrimMetadata>true</IlcTrimMetadata>
+		<IlcGenerateStackTraceData>false</IlcGenerateStackTraceData>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+
+
+		<IlcGenerateDgmlFile>true</IlcGenerateDgmlFile>
+		<IlcGenerateMapFile>true</IlcGenerateMapFile>
+		<IlcDumpGeneratedIL>true</IlcDumpGeneratedIL>
+		<ApplicationManifest>app.manifest</ApplicationManifest>
+
+
+		
+	</PropertyGroup>
+
+	<ItemGroup>
+		<TrimmableAssembly Include="TinyWordle" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.DotNet.ILCompiler" Version="7.0.0-*" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="BCLReplacements\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<LinkerArg Include="/DYNAMICBASE:NO" />
+	</ItemGroup>
 
 </Project>

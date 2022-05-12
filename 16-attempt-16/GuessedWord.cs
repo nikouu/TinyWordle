@@ -1,4 +1,8 @@
 ﻿namespace TinyWordle
 {
-    public readonly record struct GuessedWord(string Word, GuessedLetter[] GuessedLetters);
+    public struct GuessedWord
+    {
+        public string Word;
+        public GuessedLetter[] GuessedLetters;
+    }
 }

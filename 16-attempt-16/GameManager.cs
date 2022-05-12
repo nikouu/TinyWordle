@@ -1,86 +1,106 @@
-﻿namespace TinyWordle
+﻿using System.Runtime.CompilerServices;
+
+namespace TinyWordle
 {
     public class GameManager
     {
         private string[] _wordList;
-        private GameUI _gameUI;
+        private Random _random;
 
         public GameManager(string[] wordList)
         {
             _wordList = wordList;
-            _gameUI = new GameUI();
+            _random = new Random((uint)Environment.TickCount64);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Menu()
         {
             while (true)
             {
                 GameLoop();
-                _gameUI.ContinueScreen();
+                Console.Write("\r\nHit any key to play again. Hit 'q' to quit.");
 
-                var shouldContinue = Console.ReadKey();
+                var shouldContinue = Console.ReadLine();
 
-                if (shouldContinue.KeyChar == 'q')
+                if (shouldContinue == "q")
                 {
                     return;
                 }
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void GameLoop()
         {
-            var random = new Random();
-            var wordIndex = random.Next(_wordList.Length);
-            var word = _wordList[wordIndex];
+            var index = _random.Next() % _wordList.Length;
+            var word = _wordList[index];
 
             var game = new Game(word);
 
+            DisplayGame(game.GuessedWords);
+
             while (true)
             {
-                _gameUI.DisplayGame(game.GuessedWords);
+                var guessedWord = Console.ReadLine();
 
-                var guessedWord = Console.ReadLine()?.ToLower();
-
-                if (!IsValidGuess(guessedWord))
+                if (guessedWord.Length != 5)
                 {
                     continue;
                 }
 
                 var result = game.Guess(guessedWord);
+                DisplayGame(game.GuessedWords);
 
-                if (result == State.Playing)
+                if (result == State.Won)
                 {
-                    continue;
-                }
-                else if (result == State.Won)
-                {
-                    _gameUI.DisplayGame(game.GuessedWords);
-                    _gameUI.DisplayWonGame();
+                    Console.Write("\r\nYou win!");
                     break;
                 }
                 else if (result == State.Lost)
                 {
-                    _gameUI.DisplayGame(game.GuessedWords);
-                    _gameUI.DisplayLostGame();
+                    Console.Write("\r\nYou lose!");
                     break;
                 }
             }
         }
 
-        // see if the ? brings in way more code
-        // also see if its worth turning that off to reduce overhead code?
-        private bool IsValidGuess(string? guess)
+        public void DisplayGame(GuessedWord[] guessedWords)
         {
-            if (guess == null)
-            {
-                return false;
-            }
-            else if (guess.Length != 5)
-            {
-                return false;
-            }
+            Console.Clear();
+            Console.Write("TinyWordle\r\n");
 
-            return true;
+            foreach (GuessedWord guessedWord in guessedWords)
+            {
+                if (guessedWord.Word == null)
+                {
+                    Console.Write("#####\r\n");
+                }
+                else
+                {
+                    foreach (var guessedLetter in guessedWord.GuessedLetters)
+                    {
+                        if (guessedLetter.IsCorrect)
+                        {
+                            Console.BackgroundColor = ConsoleColor.DarkGreen;
+                            Console.Write(guessedLetter.Letter.ToString());
+                        }
+                        else if (guessedLetter.IsRightLetterWrongPlace)
+                        {
+                            Console.BackgroundColor = ConsoleColor.DarkYellow;
+                            Console.Write(guessedLetter.Letter.ToString());
+                        }
+                        else
+                        {
+                            Console.BackgroundColor = ConsoleColor.DarkGray;
+                            Console.Write(guessedLetter.Letter.ToString());
+                        }
+                    }
+
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    Console.Write("\r\n");
+                }
+            }
         }
     }
 }
