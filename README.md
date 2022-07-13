@@ -465,6 +465,11 @@ Go check out the value yourself over at the [releases area for attempt 15](https
 - ~~using a decomplilation tool to look at the IL and imports that are packaged up and see which from the non core library can be removed~~
 
 ## Secret Attempt 16 👀
+
+These are the scrawled notes to myself to see what's going on in the newer versions of .NET
+
+### Looking at attempt 15 with updated build tools
+
 [Native AOT is now kinda present as of .NET 7 Preview 3](https://devblogs.microsoft.com/dotnet/announcing-dotnet-7-preview-3/#faster-lighter-apps-with-native-aot) and it might be fun to see how all of the above work translates into this new version. But first, we gotta get into a state to use it.
 
 However, we've run into a problem. With updating Visual Studio (VS2022) from version 17.0 to [17.2](https://docs.microsoft.com/en-us/visualstudio/releases/2022/release-notes#17.2.0) this also updated my build tools from ~[17.0](https://github.com/dotnet/msbuild/releases/tag/v17.0.0) to [17.2](https://github.com/dotnet/msbuild/releases/tag/v17.2.0). So my build output now has:
@@ -478,9 +483,9 @@ Because of this, my binaries are now larger! Let's look at building 00-original 
 dotnet publish -r win-x64 -c Release
 ```
 
-|      | New       | Old       |
+|      | Old       | New       |
 | ---- | --------- | --------- |
-| Size | 64,275 KB | 62,091 KB |
+| Size | 62,091 KB | 64,275 KB |
 
 To get to the bottom of this, and to gain some understanding, I looked into how the MSBuilds are released. I originally thought they were just with Visual Studio, but it turns out it's with the SDKs. Newer .NET SDK installs bring in their own build engine, which makes sense as MSBuild looks to ship with .NET SDK. For example [MSBuild 17.2.0](https://github.com/dotnet/msbuild/releases/tag/v17.2.0) ships with .NET SDK 6.0.300.
 
@@ -488,19 +493,19 @@ Experimenting with this, I:
 1. On another PC which only had VS2019, I installed [Visual Studio Build Tools 2022 LTSC 17.0](https://docs.microsoft.com/en-us/visualstudio/releases/2022/release-history#fixed-version-bootstrappers) with the C++ tools (For CoreCLR AOT)
 1. [Installed each .NET 6 version](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) in turn, uninstalling older ones if needed
 
-| Build Engine | .NET Version | 00 Size   | 15 Size  |
-| ------------ | ------------ | --------- | -------- |
-| 17.0.0       | 6.0.100      | 61,321 KB | 1,047 KB |
-| 17.0.0       | 6.0.101      | 61,998 KB | 1,047 KB |
-| 17.0.0       | 6.0.102      | 61,991 KB | 1,047 KB |
-| **17.0.0**       | **6.0.103**      | **62,091 KB** | **1,047 KB** |
-| 17.0.0       | 6.0.104      | 62,120 KB | 1,047 KB |
-| 17.0.0       | 6.0.105      | 62,120 KB | 1,047 KB |
-| 17.1.0       | 6.0.200      | 61,991 KB | 1,047 KB |
-| **17.1.0**       | **6.0.201**      | **62,091 KB** | **1,047 KB** |
-| 17.1.1       | 6.0.202      | 62,120 KB | 1,047 KB |
-| 17.1.1       | 6.0.203      | 62,120 KB | 1,047 KB |
-| 17.2.0       | 6.0.300      | 62,120 KB | 1,047 KB |
+| Build Engine | .NET Version | 00 Size       | 15 Size      |
+| ------------ | ------------ | ------------- | ------------ |
+| 17.0.0       | 6.0.100      | 61,321 KB     | 1,047 KB     |
+| 17.0.0       | 6.0.101      | 61,998 KB     | 1,047 KB     |
+| 17.0.0       | 6.0.102      | 61,991 KB     | 1,047 KB     |
+| **17.0.0**   | **6.0.103**  | **62,091 KB** | **1,047 KB** |
+| 17.0.0       | 6.0.104      | 62,120 KB     | 1,047 KB     |
+| 17.0.0       | 6.0.105      | 62,120 KB     | 1,047 KB     |
+| 17.1.0       | 6.0.200      | 61,991 KB     | 1,047 KB     |
+| **17.1.0**   | **6.0.201**  | **62,091 KB** | **1,047 KB** |
+| 17.1.1       | 6.0.202      | 62,120 KB     | 1,047 KB     |
+| 17.1.1       | 6.0.203      | 62,120 KB     | 1,047 KB     |
+| 17.2.0       | 6.0.300      | 62,120 KB     | 1,047 KB     |
 
 The two rows in bold represent the correct 00-original size expected according to this whole project.
 
@@ -508,7 +513,8 @@ The two rows in bold represent the correct 00-original size expected according t
 
 Another point is is that attempt 15 size never strayed from 1,047 KB and that number sure isn't 1,011 KB 😭. I assume the tiniest version didn't move because of the version of the C++ tools I had installed? Looking on my main machine after installing VS 17.2 and installing .NET 7.0.100 Preview 4:
 
-| Build Engine            | .NET Version              | 00 Size   | 15 Size  |
-| ----------------------- | ------------------------- | --------- | -------- |
-| 17.3.0-preview-22226-04 | 7.0.100-preview.4.22252.9 | 62,419 KB | 1,048 KB |
-
+| Build Engine            | .NET Version               | 00 Size   | 15 Size  |
+| ----------------------- | -------------------------- | --------- | -------- |
+| Original                | 6.x                        | 62,091 KB | 1,011 KB |
+| 17.3.0-preview-22226-04 | 7.0.100-preview.4.22252.9  | 62,419 KB | 1,048 KB |
+| 17.3.0-preview-22306-01 | 7.0.100-preview.5.22307.18 | 62,419 KB | 1,047 KB |
