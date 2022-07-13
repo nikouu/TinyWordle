@@ -5,8 +5,10 @@
 		<TargetFramework>net7.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>disable</Nullable>
+
+		<SelfContained>true</SelfContained>
 		<PublishTrimmed>true</PublishTrimmed>
-		<TrimMode>link</TrimMode>
+		
 		<InvariantGlobalization>true</InvariantGlobalization>
 		<IlcOptimizationPreference>Size</IlcOptimizationPreference>
 		<IlcFoldIdenticalMethodBodies>true</IlcFoldIdenticalMethodBodies>
@@ -14,23 +16,23 @@
 		<IlcTrimMetadata>true</IlcTrimMetadata>
 		<IlcGenerateStackTraceData>false</IlcGenerateStackTraceData>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+		<DebugType>none</DebugType>
+
+		<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+		<IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
+		
+		<PublishAot>true</PublishAot>
 
 
 		<IlcGenerateDgmlFile>true</IlcGenerateDgmlFile>
 		<IlcGenerateMapFile>true</IlcGenerateMapFile>
 		<IlcDumpGeneratedIL>true</IlcDumpGeneratedIL>
-		<ApplicationManifest>app.manifest</ApplicationManifest>
-
-
-		
+		<ApplicationManifest>app.manifest</ApplicationManifest>		
 	</PropertyGroup>
 
 	<ItemGroup>
 		<TrimmableAssembly Include="TinyWordle" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<PackageReference Include="Microsoft.DotNet.ILCompiler" Version="7.0.0-*" />
 	</ItemGroup>
 
 	<ItemGroup>
