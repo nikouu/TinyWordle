@@ -520,3 +520,6 @@ Another point is is that attempt 15 size never strayed from 1,047 KB and that nu
 | Original                | 6.x                        | 62,091 KB | 1,011 KB |
 | 17.3.0-preview-22226-04 | 7.0.100-preview.4.22252.9  | 62,419 KB | 1,048 KB |
 | 17.3.0-preview-22306-01 | 7.0.100-preview.5.22307.18 | 62,419 KB | 1,047 KB |
+
+### .NET 7 AOT
+This experiment has been using the experimental AOT but that has since graduated into .NET 7. So let's see what differences we can get with .NET 7 NativeAOT.
