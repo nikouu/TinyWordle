@@ -8,7 +8,7 @@
 
 		<SelfContained>true</SelfContained>
 		<PublishTrimmed>true</PublishTrimmed>
-		
+
 		<InvariantGlobalization>true</InvariantGlobalization>
 		<IlcOptimizationPreference>Size</IlcOptimizationPreference>
 		<IlcFoldIdenticalMethodBodies>true</IlcFoldIdenticalMethodBodies>
@@ -21,14 +21,20 @@
 
 		<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
 		<IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
-		
-		<PublishAot>true</PublishAot>
 
+		<PublishAot>true</PublishAot>
 
 		<IlcGenerateDgmlFile>true</IlcGenerateDgmlFile>
 		<IlcGenerateMapFile>true</IlcGenerateMapFile>
 		<IlcDumpGeneratedIL>true</IlcDumpGeneratedIL>
-		<ApplicationManifest>app.manifest</ApplicationManifest>		
+		<ApplicationManifest>app.manifest</ApplicationManifest>
+
+		
+		<NoConfig>true</NoConfig>
+		<Optimize>true</Optimize>
+	
+
+
 	</PropertyGroup>
 
 	<ItemGroup>

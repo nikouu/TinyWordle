@@ -495,6 +495,8 @@ Experimenting with this, I:
 1. On another PC which only had VS2019, I installed [Visual Studio Build Tools 2022 LTSC 17.0](https://docs.microsoft.com/en-us/visualstudio/releases/2022/release-history#fixed-version-bootstrappers) with the C++ tools (For CoreCLR AOT)
 1. [Installed each .NET 6 version](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) in turn, uninstalling older ones if needed
 
+The **two rows in bold** below represent the correct 00-original size expected according to this whole project.
+
 | Build Engine | .NET Version | 00 Size       | 15 Size      |
 | ------------ | ------------ | ------------- | ------------ |
 | 17.0.0       | 6.0.100      | 61,321 KB     | 1,047 KB     |
@@ -508,8 +510,6 @@ Experimenting with this, I:
 | 17.1.1       | 6.0.202      | 62,120 KB     | 1,047 KB     |
 | 17.1.1       | 6.0.203      | 62,120 KB     | 1,047 KB     |
 | 17.2.0       | 6.0.300      | 62,120 KB     | 1,047 KB     |
-
-The two rows in bold represent the correct 00-original size expected according to this whole project.
 
 🤔 So what this seems to mean is even with the same `<TargetFramework>net6.0</TargetFramework>` in the `.csproj` file, the binary output will depend on your .NET **minor version** and **MSBuild version**! I guess it sounds obvious in retrospect, but it never occured to me as I never really cared about the exact output bytes. 
 
