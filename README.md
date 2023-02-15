@@ -521,5 +521,39 @@ Another point is is that attempt 15 size never strayed from 1,047 KB and that nu
 | 17.3.0-preview-22226-04 | 7.0.100-preview.4.22252.9  | 62,419 KB | 1,048 KB |
 | 17.3.0-preview-22306-01 | 7.0.100-preview.5.22307.18 | 62,419 KB | 1,047 KB |
 
-### .NET 7 AOT
-This experiment has been using the experimental AOT but that has since graduated into .NET 7. So let's see what differences we can get with .NET 7 NativeAOT.
+## Attempt 17
+
+Not so secret this time. We'll be taking the final normal attempt, 15, and running it against a .NET 8 preview. To do this, you can head off to the [dotnet/installer](https://github.com/dotnet/installer) repo. 
+
+I was inspired to run it back by [this tweet from Michal Strehovský](https://twitter.com/MStrehovsky/status/1625702785516994565) and make this attempt.
+
+This will be using: `SDK Version: 8.0.100-preview.1.23114.33` and `MSBuild version 17.6.0-preview-23108-10+51df47643`, running the usual:
+```
+dotnet publish -r win-x64 -c Release
+```
+
+Except we get a couple of problems:
+
+### 1. `PublishTrimmed` isn't updated yet
+```
+error NU1101: Unable to find package Microsoft.NET.ILLink.Tasks. No packages exist with this id in source(s): dotnet-experimental, nuget
+```
+
+Digging into it, this is the package that `<PublishTrimmed>true</PublishTrimmed>` seems to use. And setting to `false` gives us a working build but not as a single package.
+
+### 2. Setting `<TargetFramework>net8.0</TargetFramework>` breaks the packages
+
+For fun then I set the `TargetFramework` which broke even more.
+
+On build:
+
+```
+Unable to find package Microsoft.NETCore.App.Runtime.win-x64 with version (= 8.0.0-preview.1.23110.8)
+Unable to find package Microsoft.WindowsDesktop.App.Runtime.win-x64 with version (= 8.0.0-preview.1.23112.2)
+Unable to find package Microsoft.AspNetCore.App.Runtime.win-x64 with version (= 8.0.0-preview.1.23112.2)
+```
+
+
+Going back to the original problem, I also grabbed `8.0.100-preview.2.23114.23` but had the same problem. So I'm guessing the teams in charge of the other packages haven't finished their work - which is fair enough, this is suuuuper early. 
+
+I'll return to this later on in the .NET 8 lifecycle.
