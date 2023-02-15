@@ -557,3 +557,28 @@ Unable to find package Microsoft.AspNetCore.App.Runtime.win-x64 with version (= 
 Going back to the original problem, I also grabbed `8.0.100-preview.2.23114.23` but had the same problem. So I'm guessing the teams in charge of the other packages haven't finished their work - which is fair enough, this is suuuuper early. 
 
 I'll return to this later on in the .NET 8 lifecycle.
+
+*Or we can have fun now*.
+
+### Building from source
+
+My problem was with Microsoft.NET.ILLink.Tasks. So after a smidge of searching around, I found the [repo for ILLink.Tasks](https://github.com/dotnet/runtime/tree/main/src/tools/illink/src/ILLink.Tasks). Meaning from here it's grab the whole runtime repo, go into the directory for this area, and run the commands it says:
+```
+dotnet restore illink.sln
+dotnet pack illink.sln
+```
+
+This produces a .nupkg file that I pointed my project to, which added a new entry into nuget.config:
+```
+<add key="Locally packaged dotnet source" value="C:\dotnet\runtime\artifacts\packages\Release\Shipping" />
+```
+
+And I had a successful build! Unfortunately even with the same settings, it was not a single file anymore:
+
+![image](images/net8buildsad.png)
+
+When setting `PublishTrimmed` to false, a LOT MORE files were spat out. So perhaps those in the screenshot above have yet to be properly AOT-ified?
+
+![image](images/net8buildsad2.png)
+
+Okay, now it's time to wait for a little later in the release.
