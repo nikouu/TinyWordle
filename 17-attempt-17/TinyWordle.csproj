@@ -5,7 +5,7 @@
 		<TargetFramework>net7.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>disable</Nullable>
-		<PublishTrimmed>false</PublishTrimmed>
+		<PublishTrimmed>true</PublishTrimmed>
 		<TrimMode>link</TrimMode>
 		<InvariantGlobalization>true</InvariantGlobalization>
 		<IlcOptimizationPreference>Size</IlcOptimizationPreference>
