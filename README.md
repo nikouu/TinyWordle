@@ -31,7 +31,7 @@ Each shrinking attempt will be around looking at a published `.exe` in Release m
 However, I will be targeting x64 Windows. And to make sure it works, I'll be playing one game after each attempt to see if it still works.
 
 ## Original
-The `00 original` folder is about getting the game going with no attempt to think about efficiency. It's left as is, warts and all. There are some inefficencies, useless assignments, etc. But that's all part of this game to shrink the file - we need a baseline *somewhere*.
+The `00 original` folder is about getting the game going with no attempt to think about efficiency. It's left as is, warts and all. There are some inefficiencies, useless assignments, etc. But that's all part of this game to shrink the file - we need a baseline *somewhere*.
 
 ```
 dotnet publish -r win-x64 -c Release
@@ -259,7 +259,7 @@ I will be using the following:
 
 Looking at the dumps of what is linked, it's all the core library things like `System.Threading`, `System.Collections`, and things like the various primitive types. I understand now why the snake game creator went to the toolchain and I can see things being linked.
 
-As for now, I dont understand enough about Interop, Importing DLLs, or want to get into messing with the toolchain. 
+As for now, I don't understand enough about Interop, Importing DLLs, or want to get into messing with the toolchain. 
 
 ## Attempt 13 (-1 KB)
 Still not with the toolchain, just ideas that come to me now and again.
@@ -271,10 +271,10 @@ Attempted to remove the `Console.ResetColor()` calls with `Console.BackgroundCol
 Removing nullable checks, and setting `<Nullable>disable</Nullable>` in the `csproj`.
 
 ### Not using `new` for creating structs (-0 KB)
-The `Random`, `GuessedLetter`, and `GuessedWord` structs and using them like pritimives. However this didn't seem to change anything - unless I did something wrong 🤔
+The `Random`, `GuessedLetter`, and `GuessedWord` structs and using them like primitives. However this didn't seem to change anything - unless I did something wrong 🤔
 
 ### Not using `string.IsNullOrEmpty()` (-0 KB)
-Opting to use manual empty string and null checks. However I think because they are part of the core library that even if the classes/methods aren't used, theyre included. 
+Opting to use manual empty string and null checks. However I think because they are part of the core library that even if the classes/methods aren't used, they're included. 
 
 ### Removing the `Console.Write(char value)` call with a `Console.Write(string? value)` call (-1 KB)
 Each letter is printed via the `char` implementation of `Console.Write()` however the `string` version is also present. And as the `.ToString()` method is part of the core library and not trimmed, then we can make each printed `char` a `string`.
@@ -346,7 +346,7 @@ Which according to sharplab.io turns into:
 call System.SpanHelpers.SequenceEqual(Byte ByRef, Byte ByRef, UIntPtr)
 ```
 
-So to get around that I made it simplier
+So to get around that I made it simpler
 ```csharp
 shouldContinue[0] == 'q'
 ```
@@ -356,7 +356,7 @@ Which made it some simple compares in IL assembly
 However, it didn't make a difference because I think `System.SpanHelpers` is part of the core so they're loaded in anyway.
 
 ###  `[MethodImpl(MethodImplOptions.AggressiveInlining)]` (-1 KB)
-From my super limited understanding, inlining can increase code side as code is copy/pasted by the compliler to throw it right in sequential order instead of jumping all around the code base for the next call. 
+From my super limited understanding, inlining can increase code side as code is copy/pasted by the compiler to throw it right in sequential order instead of jumping all around the code base for the next call. 
 
 However, it seems in my case, it has reduced my code size when put on particular functions. 
 
@@ -388,7 +388,7 @@ public static bool Contains2(string s, char c)
 	return s.IndexOf(c) != -1;
 }
 ```
-Didn't make a change, it seems the compliler knew smarter ways to do this
+Didn't make a change, it seems the compiler knew smarter ways to do this
 
 ## Attempt 14 (-0 KB)
 This attempt uses [dnSpy](https://github.com/dnSpy/dnSpy) (which is now outdated, and you can use [ILSpy](https://github.com/icsharpcode/ILSpy)) to check out what is being bundled with the `.exe`.
@@ -405,7 +405,7 @@ Also didn't help.
 Actually made it larger
 
 ### Taking the internal implementation of dotnet functions
-Theoretrically this then gets rid of the guards and other overheads. But turns out this is way too above what I'm doing because I have to unravel lots of stuff
+Theoretically this then gets rid of the guards and other overheads. But turns out this is way too above what I'm doing because I have to unravel lots of stuff
 
 ## Attempt 15 (-16 KB)
 The light linker playing round, trying flags from the [MSVC linker documentation](https://docs.microsoft.com/en-us/cpp/build/reference/linker-options?view=msvc-170). I do try a lot more options than written, but mostly with zero effect.
@@ -511,9 +511,9 @@ The **two rows in bold** below represent the correct 00-original size expected a
 | 17.1.1       | 6.0.203      | 62,120 KB     | 1,047 KB     |
 | 17.2.0       | 6.0.300      | 62,120 KB     | 1,047 KB     |
 
-🤔 So what this seems to mean is even with the same `<TargetFramework>net6.0</TargetFramework>` in the `.csproj` file, the binary output will depend on your .NET **minor version** and **MSBuild version**! I guess it sounds obvious in retrospect, but it never occured to me as I never really cared about the exact output bytes. 
+🤔 So what this seems to mean is even with the same `<TargetFramework>net6.0</TargetFramework>` in the `.csproj` file, the binary output will depend on your .NET **minor version** and **MSBuild version**! I guess it sounds obvious in retrospect, but it never occurred to me as I never really cared about the exact output bytes. 
 
-Another point is is that attempt 15 size never strayed from 1,047 KB and that number sure isn't 1,011 KB 😭. I assume the tiniest version didn't move because of the version of the C++ tools I had installed? Looking on my main machine after installing VS 17.2 and installing .NET 7.0.100 Preview 4:
+Another point is that attempt 15 size never strayed from 1,047 KB and that number sure isn't 1,011 KB 😭. I assume the tiniest version didn't move because of the version of the C++ tools I had installed? Looking on my main machine after installing VS 17.2 and installing .NET 7.0.100 Preview 4:
 
 | Build Engine            | .NET Version               | 00 Size   | 15 Size  |
 | ----------------------- | -------------------------- | --------- | -------- |
