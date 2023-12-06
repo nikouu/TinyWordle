@@ -582,3 +582,14 @@ When setting `PublishTrimmed` to false, a LOT MORE files were spat out. So perha
 ![image](images/net8buildsad2.png)
 
 Okay, now it's time to wait for a little later in the release.
+
+## Attempt 18 (-13 KB)
+.NET 8 is here! (Specifically `8.0.100`)
+
+Using attempt 16 (attempt 17 had shoehorning for .NET 8 previews) we finally get some progress! Nothing fancy being brought in, essentially just publishing. Savings out of the box!
+
+```
+dotnet publish -r win-x64 -c Release
+
+Total binary size: 998 KB
+```
