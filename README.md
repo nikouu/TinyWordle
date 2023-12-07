@@ -614,8 +614,63 @@ Worth a shot, but nope.
 ### Removing unncessary flags
 By now TinyWordle has a lot of flags from several .NET versions. I decided now to remove them one by one to clean up the `.csproj` file. 
 
-To ensure no regression, I did the following:
+To ensure no regression, I'll do the following:
 1. Remove flag from the `.csproj` file
-1. Ensure the game still ran
+1. Ensure the output files are expected (single `.exe`)
+1. Ensure the game still runs
 1. Checked the size on disk
 1. Used [Sizeoscope](https://github.com/MichalStrehovsky/sizoscope) from [Michal Strehovský](https://twitter.com/MStrehovsky) to compare the published `.mstat` files to ensure no changes occurred
+
+(The mess) Before:
+```xml
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+
+    <SelfContained>true</SelfContained>
+    <PublishTrimmed>true</PublishTrimmed>
+
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <IlcOptimizationPreference>Size</IlcOptimizationPreference>
+    <IlcFoldIdenticalMethodBodies>true</IlcFoldIdenticalMethodBodies>
+    <IlcDisableReflection>true</IlcDisableReflection>
+    <IlcTrimMetadata>true</IlcTrimMetadata>
+    <IlcGenerateStackTraceData>false</IlcGenerateStackTraceData>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    <DebugType>none</DebugType>
+
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
+
+    <PublishAot>true</PublishAot>
+
+    <IlcGenerateMstatFile>true</IlcGenerateMstatFile>
+    <IlcGenerateDgmlFile>true</IlcGenerateDgmlFile>
+    <IlcGenerateMapFile>true</IlcGenerateMapFile>
+    <IlcDumpGeneratedIL>true</IlcDumpGeneratedIL>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+
+    <NoConfig>true</NoConfig>
+    <Optimize>true</Optimize>
+
+    <StackTraceSupport>false</StackTraceSupport>
+    <UseSystemResourceKeys>true</UseSystemResourceKeys>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<TrimmableAssembly Include="TinyWordle" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<LinkerArg Include="/DYNAMICBASE:NO" />
+	</ItemGroup>
+</Project>
+```
+
+The tidy after:
+```
+```

@@ -1,5 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
 	<PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
@@ -30,7 +29,6 @@
     <IlcDumpGeneratedIL>true</IlcDumpGeneratedIL>
     <ApplicationManifest>app.manifest</ApplicationManifest>
 
-
     <NoConfig>true</NoConfig>
     <Optimize>true</Optimize>
 
@@ -45,5 +43,4 @@
 	<ItemGroup>
 		<LinkerArg Include="/DYNAMICBASE:NO" />
 	</ItemGroup>
-
 </Project>
