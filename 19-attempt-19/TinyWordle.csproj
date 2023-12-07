@@ -1,0 +1,49 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+
+    <SelfContained>true</SelfContained>
+    <PublishTrimmed>true</PublishTrimmed>
+
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <IlcOptimizationPreference>Size</IlcOptimizationPreference>
+    <IlcFoldIdenticalMethodBodies>true</IlcFoldIdenticalMethodBodies>
+    <IlcDisableReflection>true</IlcDisableReflection>
+    <IlcTrimMetadata>true</IlcTrimMetadata>
+    <IlcGenerateStackTraceData>false</IlcGenerateStackTraceData>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    <DebugType>none</DebugType>
+
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
+
+    <PublishAot>true</PublishAot>
+
+    <IlcGenerateMstatFile>true</IlcGenerateMstatFile>
+    <IlcGenerateDgmlFile>true</IlcGenerateDgmlFile>
+    <IlcGenerateMapFile>true</IlcGenerateMapFile>
+    <IlcDumpGeneratedIL>true</IlcDumpGeneratedIL>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+
+
+    <NoConfig>true</NoConfig>
+    <Optimize>true</Optimize>
+
+    <StackTraceSupport>false</StackTraceSupport>
+    <UseSystemResourceKeys>true</UseSystemResourceKeys>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<TrimmableAssembly Include="TinyWordle" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<LinkerArg Include="/DYNAMICBASE:NO" />
+	</ItemGroup>
+
+</Project>

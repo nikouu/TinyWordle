@@ -593,3 +593,29 @@ dotnet publish -r win-x64 -c Release
 
 Total binary size: 998 KB
 ```
+
+## Attempt 19 (-99 KB)
+Testing out new flags via the new .NET 8 [trimming options](https://learn.microsoft.com/en-us/dotnet/core/deploying/trimming/trimming-options?pivots=dotnet-8-0). Only mentioning the flags that did change the size for this project. I speculate a fair amount of these flags don't do anything for TinyWordle because what gets trimmed isn't even included in the binary due to how simple TinyWordle is.
+
+### `StackTraceSupport` (-99 KB)
+A big one for .NET 8+. 
+```xml
+<StackTraceSupport>false</StackTraceSupport>
+```
+```
+dotnet publish -r win-x64 -c Release
+
+Total binary size: 899 KB
+```
+
+### `UseNativeHttpHandler` (+1 KB)
+Worth a shot, but nope. 
+
+### Removing unncessary flags
+By now TinyWordle has a lot of flags from several .NET versions. I decided now to remove them one by one to clean up the `.csproj` file. 
+
+To ensure no regression, I did the following:
+1. Remove flag from the `.csproj` file
+1. Ensure the game still ran
+1. Checked the size on disk
+1. Used [Sizeoscope](https://github.com/MichalStrehovsky/sizoscope) from [Michal Strehovský](https://twitter.com/MStrehovsky) to compare the published `.mstat` files to ensure no changes occurred
