@@ -608,9 +608,6 @@ dotnet publish -r win-x64 -c Release
 Total binary size: 899 KB
 ```
 
-### `UseNativeHttpHandler` (+1 KB)
-Worth a shot, but nope. 
-
 ### Removing unncessary flags
 By now TinyWordle has a lot of flags from several .NET versions. I decided now to remove them one by one to clean up the `.csproj` file. 
 
@@ -672,5 +669,40 @@ To ensure no regression, I'll do the following:
 ```
 
 The tidy after:
+```xml
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+
+    <PublishAot>true</PublishAot>
+    <SelfContained>true</SelfContained>
+
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <IlcFoldIdenticalMethodBodies>true</IlcFoldIdenticalMethodBodies>
+    <IlcDisableReflection>true</IlcDisableReflection>
+    <DebugType>none</DebugType>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <StackTraceSupport>false</StackTraceSupport>
+
+    <IlcGenerateMstatFile>true</IlcGenerateMstatFile>
+    <IlcGenerateDgmlFile>true</IlcGenerateDgmlFile>
+    <IlcGenerateMapFile>true</IlcGenerateMapFile>
+    <IlcDumpGeneratedIL>true</IlcDumpGeneratedIL>   
+  </PropertyGroup>
+
+	<ItemGroup>
+		<LinkerArg Include="/DYNAMICBASE:NO" />
+	</ItemGroup>
+</Project>
+
 ```
+
+I was surprised `PublishTrimmed` wasn't needed, however an error told me: 
 ```
+error : PublishTrimmed is implied by native compilation and cannot be disabled.
+```
+
+Similar to the start of attempt 19, some of the flags removed may still be valid - they just didn't have an impact on TinyWordle for whatever reason. This is a fast moving piece of .NET and I wouldn't be surprised if the surface continued to change.

@@ -5,26 +5,20 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>
 
+    <PublishAot>true</PublishAot>
     <SelfContained>true</SelfContained>
 
     <InvariantGlobalization>true</InvariantGlobalization>
     <IlcFoldIdenticalMethodBodies>true</IlcFoldIdenticalMethodBodies>
-    
-    
     <IlcDisableReflection>true</IlcDisableReflection>
     <DebugType>none</DebugType>
-
-    <PublishAot>true</PublishAot>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <StackTraceSupport>false</StackTraceSupport>
 
     <IlcGenerateMstatFile>true</IlcGenerateMstatFile>
     <IlcGenerateDgmlFile>true</IlcGenerateDgmlFile>
     <IlcGenerateMapFile>true</IlcGenerateMapFile>
-    <IlcDumpGeneratedIL>true</IlcDumpGeneratedIL>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
-
-   
-
-    <StackTraceSupport>false</StackTraceSupport>
+    <IlcDumpGeneratedIL>true</IlcDumpGeneratedIL>   
   </PropertyGroup>
 
 	<ItemGroup>
