@@ -706,3 +706,15 @@ error : PublishTrimmed is implied by native compilation and cannot be disabled.
 ```
 
 Similar to the start of attempt 19, some of the flags removed may still be valid - they just didn't have an impact on TinyWordle for whatever reason. This is a fast moving piece of .NET and I wouldn't be surprised if the surface continued to change.
+
+## Attempt 20
+After the cleanup, let's begin to look at the latest, potentially breaking changes. We'll be looking at the [raw docs from GitHub](https://github.com/dotnet/runtime/blob/main/src/coreclr/nativeaot/docs/optimizing.md). 
+
+### `OptimizationPreference` (- KB)
+Hold on, didn't I just remove `OptimizationPreference` in the attempt 19 cleanup? Kinda yeah, the flag when I originally used it was called `IlcOptimizationPreference`. I guess it's graduated out of the Intermediate Language Compiler space and into the regular (normie?) space. Which brings up something interesting: let's say that the ILC prefixed flag stopped working in .NET 8 and the binary was *still* smaller than with the .NET 7 attempts. This means .NET 8 did a huge amount of work to pick up the slack of not having `IlcOptimizationPreference` working and still made it smaller again for attempt 18!
+
+We can see in the new [Optimize AOT deployments doc](https://learn.microsoft.com/en-gb/dotnet/core/deploying/native-aot/optimizing) linked from the GitHub docs above, that it's now just `OptimizationPreference`. So let's try it.
+
+```xml
+<OptimizationPreference>Size</OptimizationPreference>
+```
