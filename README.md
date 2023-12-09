@@ -618,7 +618,7 @@ To ensure no regression, I'll do the following:
 1. Ensure the output files are expected (single `.exe`)
 1. Ensure the game still runs
 1. Checked the size on disk
-1. Used [Sizeoscope](https://github.com/MichalStrehovsky/sizoscope) from [Michal Strehovský](https://twitter.com/MStrehovsky) to compare the published `.mstat` files to ensure no changes occurred
+1. Used [Sizeoscope](https://github.com/MichalStrehovsky/sizoscope) from [Michal Strehovský](https://twitter.com/MStrehovsky) to compare the published `.mstat` files to ensure no changes occurred. By the way, Michal is the same guy who wrote the original Snake game that inspired this project.
 
 (The mess) Before:
 ```xml
