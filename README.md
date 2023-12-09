@@ -18,6 +18,8 @@ The project was kicked off via `dotnet new console`.
 
 Pretty similar to the original given the constraints.
 
+_Why do I put the attempts in different folders rather than branches? To be honest, I didn't expect to go this far in attempts so the code was just lumped together in a few attempts. But it's a really fun project and it just kept going._
+
 ## Shrinking
 The whole shrinking thing is something I've wanted to try and emulate since the fantastic [Building a self-contained game in C# under 8 kilobytes](https://medium.com/@MStrehovsky/building-a-self-contained-game-in-c-under-8-kilobytes-74c3cf60ea04) post by [Michal Strehovský](https://twitter.com/MStrehovsky). You can see the source at the GitHub repo: [SeeSharpSnake](https://github.com/MichalStrehovsky/SeeSharpSnake)
 
