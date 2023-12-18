@@ -1,5 +1,4 @@
 ﻿using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace TinyWordle
 {
@@ -20,11 +19,10 @@ namespace TinyWordle
             while (true)
             {
                 GameLoop();
+
                 TinyConsole.printf("\r\nHit any key to play again. Hit 'q' to quit.");
 
                 var shouldContinue = TinyConsole.ReadLine();
-
-
                 if (shouldContinue == "q")
                 {
                     return;
