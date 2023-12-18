@@ -741,7 +741,7 @@ Total binary size: 773 KB
 
 ### P/Invoke for `Console.Write()` (- 0 KB)
 
-I emailed [Michal Strehovský](https://twitter.com/MStrehovsky) asking for Sizoscope help, and he suggested more things to try! This time we'll be looking at removing `Console.Write()` calls and replacing them with [P/Invoke](https://learn.microsoft.com/en-us/dotnet/standard/native-interop/pinvoke) calls to `printf`. In theory, this would trim out the `Write()` calls, saving us on even more space. We could extend this to `ReadLine()` calls too,meaning we can remove all the `Console` calls. 
+I emailed [Michal Strehovský](https://twitter.com/MStrehovsky) asking for Sizoscope help, and he suggested more things to try! This time we'll be looking at removing `Console.Write()` calls and replacing them with [P/Invoke](https://learn.microsoft.com/en-us/dotnet/standard/native-interop/pinvoke) calls to `printf`. In theory, this would trim out the `Write()` calls, saving us on even more space. We could extend this to `ReadLine()` calls too, meaning we can remove all the `Console` calls. 
 
 ```csharp
 [DllImport("msvcr120.dll")]
@@ -771,7 +771,7 @@ Here are some extra references that helped me:
 
 ### P/Invoke for everything `Console` (- 50 KB) 
 
-So, in the end we just trimmed the `Write()` function from `Console` along with a couple of other bits and pieces. But now that P/Invoke is an option, we can also get rid of the `Console.ReadLine()` and `Console.Clear()` calls. Meaning we have zero dependencies on `Console`.
+So, in the end we just trimmed the `Write()` function from `Console` along with a couple of other bits and pieces. But hinted at before, now that P/Invoke is an option, we can also get rid of the `Console.ReadLine()` and `Console.Clear()` calls. Meaning we have zero dependencies on `Console`.
 
 Ended up making a little static class called `TinyConsole` and it looks like this:
 
