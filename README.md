@@ -758,4 +758,4 @@ However, it was really fun spending an afternoon on this low level work. It's th
 
 Here are some extra references that helped me:
 - ["Hello World" via PInvoke](https://stackoverflow.com/questions/34302729/hello-world-via-pinvoke)
-- [ANSI colors and writing directly to console output C#](https://stackoverflow.com/questions/61779942/ansi-colors-and-writing-directly-to-console-output-c-sharp)- 
+- [ANSI colors and writing directly to console output C#](https://stackoverflow.com/questions/61779942/ansi-colors-and-writing-directly-to-console-output-c-sharp)
