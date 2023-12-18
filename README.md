@@ -739,7 +739,16 @@ Total binary size: 773 KB
 
 ## Attempt 21 (-0 KB)
 
+### P/Invoke for `Console.Write()` (- 0 KB)
+
 I emailed [Michal Strehovský](https://twitter.com/MStrehovsky) asking for Sizoscope help, and he suggested more things to try! This time we'll be looking at removing `Console.Write()` calls and replacing them with [P/Invoke](https://learn.microsoft.com/en-us/dotnet/standard/native-interop/pinvoke) calls to `printf`. In theory, this would trim out the `Write()` calls, saving us on even more space. We could extend this to `ReadLine()` calls too,meaning we can remove all the `Console` calls. 
+
+```csharp
+[DllImport("msvcr120.dll")]
+public static extern int printf(string format);
+```
+
+A tricky part was getting console formatting to work. I had to learn about [ANSI colours](https://stackoverflow.com/a/15011692). The StackOverflow answer for [ANSI colors and writing directly to console output C#](https://stackoverflow.com/questions/61779942/ansi-colors-and-writing-directly-to-console-output-c-sharp/75958239#75958239) was really helpful.
 
 Unfortunately, it didn't end up being a win. The binary grew from 773 KB to 781 KB. Using Sizoscope, it seems the [`DLLImport`](https://learn.microsoft.com/en-us/dotnet/api/system.runtime.interopservices.dllimportattribute?view=net-8.0) attribute brings in a lot of safety checking for your new, unmanaged binary.
 
@@ -759,3 +768,46 @@ However, it was really fun spending an afternoon on this low level work. It's th
 Here are some extra references that helped me:
 - ["Hello World" via PInvoke](https://stackoverflow.com/questions/34302729/hello-world-via-pinvoke)
 - [ANSI colors and writing directly to console output C#](https://stackoverflow.com/questions/61779942/ansi-colors-and-writing-directly-to-console-output-c-sharp)
+
+### P/Invoke for everything `Console` (- 50 KB) 
+
+So, in the end we just trimmed the `Write()` function from `Console` along with a couple of other bits and pieces. But now that P/Invoke is an option, we can also get rid of the `Console.ReadLine()` and `Console.Clear()` calls. Meaning we have zero dependencies on `Console`.
+
+Ended up making a little static class called `TinyConsole` and it looks like this:
+
+```csharp
+public static class TinyConsole
+{
+    [DllImport("msvcr120.dll")]
+    public static extern int printf(string format);
+
+    [DllImport("msvcr120.dll")]
+    public static extern int system(string command);
+
+    [DllImport("msvcr120.dll")]
+    private static extern IntPtr gets(StringBuilder value);
+
+    public static string ReadLine()
+    {
+        var value = new StringBuilder();
+
+        gets(value);
+
+        return value.ToString();
+    }
+}
+```
+
+I would like to fix up the `StringBuilder` part, i.e. reuse it and I do just raw call the delegates but I figured for now that's the smallest I can make them. Might look to fix up in the future.
+
+Well, well, well. Using Sizoscope between Attempt 20 and *now* Attempt 21:
+
+![](images/Attempt21SizoscopePart2.jpg)
+
+A saving of 50.5 KB! So even though we gain an extra ~18 KB from having to do all the binary management, overall by removing `Console` we win in the end! 
+
+```
+dotnet publish -r win-x64 -c Release
+
+Total binary size: 723 KB
+```

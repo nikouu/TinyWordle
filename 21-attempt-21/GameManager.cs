@@ -22,7 +22,7 @@ namespace TinyWordle
                 GameLoop();
                 TinyConsole.printf("\r\nHit any key to play again. Hit 'q' to quit.");
 
-                var shouldContinue = Console.ReadLine();
+                var shouldContinue = TinyConsole.ReadLine();
 
 
                 if (shouldContinue == "q")
@@ -44,7 +44,7 @@ namespace TinyWordle
 
             while (true)
             {
-                var guessedWord = Console.ReadLine();
+                var guessedWord = TinyConsole.ReadLine();
 
                 if (guessedWord.Length != 5)
                 {
@@ -69,7 +69,7 @@ namespace TinyWordle
 
         public void DisplayGame(GuessedWord[] guessedWords)
         {
-            Console.Clear();
+            TinyConsole.system("cls");
             TinyConsole.printf("TinyWordle\r\n");
 
             foreach (GuessedWord guessedWord in guessedWords)
