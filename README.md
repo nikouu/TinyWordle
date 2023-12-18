@@ -727,3 +727,35 @@ dotnet publish -r win-x64 -c Release
 Total binary size: 777 KB
 ```
 
+## Attempt 20 Part 2 (-4 KB)
+
+Built on another machine, not sure what changed, but I'll accept the savings.
+
+```
+dotnet publish -r win-x64 -c Release
+
+Total binary size: 773 KB
+```
+
+## Attempt 21 (-0 KB)
+
+I emailed [Michal Strehovský](https://twitter.com/MStrehovsky) asking for Sizoscope help, and he suggested more things to try! This time we'll be looking at removing `Console.Write()` calls and replacing them with [P/Invoke](https://learn.microsoft.com/en-us/dotnet/standard/native-interop/pinvoke) calls to `printf`. In theory, this would trim out the `Write()` calls, saving us on even more space. We could extend this to `ReadLine()` calls too,meaning we can remove all the `Console` calls. 
+
+Unfortunately, it didn't end up being a win. The binary grew from 773 KB to 781 KB. Using Sizoscope, it seems the [`DLLImport`](https://learn.microsoft.com/en-us/dotnet/api/system.runtime.interopservices.dllimportattribute?view=net-8.0) attribute brings in a lot of safety checking for your new, unmanaged binary.
+
+![](images/Attempt21Sizoscope.jpg)
+
+The image above compares Attempt 20 (left) and Attempt 21 (right) and tells us at the bottom that Attempt 21 is 7 KB larger than Attempt 20.
+
+Without creating many screenshots of the comparisons, it really does seem we bring in a lot of helpers for:
+- File system path helpers
+- Safety for paths
+- Keeping track of the loaded binaries
+- A lot of string transformations and checks
+- A fair few new Collections types
+
+However, it was really fun spending an afternoon on this low level work. It's the first time I've done it wihtout blindly following someone else' work. 
+
+Here are some extra references that helped me:
+- ["Hello World" via PInvoke](https://stackoverflow.com/questions/34302729/hello-world-via-pinvoke)
+- [ANSI colors and writing directly to console output C#](https://stackoverflow.com/questions/61779942/ansi-colors-and-writing-directly-to-console-output-c-sharp)- 
