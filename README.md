@@ -811,3 +811,5 @@ dotnet publish -r win-x64 -c Release
 
 Total binary size: 723 KB
 ```
+
+Thanks Michal!
