@@ -65,7 +65,6 @@ namespace TinyWordle
             SetConsoleCursorPosition(hConsole, dwTopLeft);
         }
 
-
         public static string ReadLine()
         {
             IntPtr hConsoleInput = GetStdHandle(-10);

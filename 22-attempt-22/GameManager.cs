@@ -21,7 +21,7 @@ namespace TinyWordle
                 TinyConsole.Write("\r\nHit any key to play again. Hit 'q' to quit.");
 
                 var shouldContinue = TinyConsole.ReadLine();
-                if (shouldContinue[0] == 'q')
+                if (shouldContinue.Length != 0 && shouldContinue[0] == 'q')
                 {
                     return;
                 }

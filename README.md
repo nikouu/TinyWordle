@@ -871,13 +871,19 @@ Some points:
 So let's look at the stats. We'll do a comparison of:
 1. The code as-is for this attempt, but bringing back in `Console` to see the size
 1. This new P/Invoke work but with the prepopulated list for direct P/Invokes removed. I.E. just regular P/Invoke calls
+  - For me this is under `%UserProfile%\.nuget\packages\microsoft.dotnet.ilcompiler\8.0.0\build\WindowsAPIs.txt`
 1. Finally, with direct P/Invoke calls
 
-| Version          | Size |
-| ---------------- | ---- |
-| Console          |      |
-| Regular P/Invoke |      |
-| Direct P/Invoke  |      |
+| Version          | Size   |
+| ---------------- | ------ |
+| Console          | 773 KB |
+| Regular P/Invoke | 721 KB |
+| Direct P/Invoke  | 704 KB |
+
+This means that:
+1. Having the `Console` object for reading, writing, and clearing costs 52 KB
+1. The savings by changing to direct P/Invokes is 17 KB
+
 
 References for this one:
 - [Generating C# bindings for native Windows libraries](https://lowleveldesign.wordpress.com/2023/11/23/generating-c-bindings-for-native-windows-libraries/)
@@ -894,4 +900,10 @@ There was also extra work put in around really small improvements in the ones or
 - Replaced the `Environment.TickCount64` with the Kernel32 call for it
 - Aggressively inlined the functions with only one caller
 
+```
+dotnet publish -r win-x64 -c Release
 
+Total binary size: 704 KB
+```
+
+Thanks again Michal!
