@@ -870,8 +870,7 @@ Some points:
 
 So let's look at the stats. We'll do a comparison of:
 1. The code as-is for this attempt, but bringing back in `Console` to see the size
-1. This new P/Invoke work but with the prepopulated list for direct P/Invokes removed. I.E. just regular P/Invoke calls
-  - For me this is under `%UserProfile%\.nuget\packages\microsoft.dotnet.ilcompiler\8.0.0\build\WindowsAPIs.txt`
+1. This new P/Invoke work but with the prepopulated list for direct P/Invokes removed. I.E. just regular P/Invoke calls. For me this is under `%UserProfile%\.nuget\packages\microsoft.dotnet.ilcompiler\8.0.0\build\WindowsAPIs.txt`
 1. Finally, with direct P/Invoke calls
 
 | Version          | Size   |
