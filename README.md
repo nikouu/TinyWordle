@@ -813,3 +813,85 @@ Total binary size: 723 KB
 ```
 
 Thanks Michal!
+
+## Attempt 22 (- KB)
+
+Michal offered another piece of advice: [Direct P/Invoke calls](https://learn.microsoft.com/en-us/dotnet/core/deploying/native-aot/interop#direct-pinvoke-calls). Regular P/Invoke calls are lazily done at run time and have a lot of checks - as we saw in Attempt 21. Direct P/Invoke calls avoid these costs by instructing the compiler to generate direct calls. What does that mean for this project? We can get rid of all those checks and continue to shrink the final binary. 
+
+At first I had a lot of difficulty understanding how to get direct P/Invoke calls to work with the calls to `msvcr120.dll` I was doing previously. However when doing:
+```xml
+<ItemGroup>
+  <DirectPInvoke Include="msvcr120.dll" />
+</ItemGroup>
+```
+Resulting in:
+```
+TinyWordle.obj : error LNK2001: unresolved external symbol printf
+```
+Via [DUMPBIN](https://learn.microsoft.com/en-us/previous-versions/visualstudio/visual-studio-2008/20y05bd5(v=vs.90)): `prinf` was certainly there!
+```
+dumpbin /EXPORTS C:\Windows\System32\msvcr120.dll > C:\Temp\dump.txt
+```
+
+![](images/msvcr120printfdump.png)
+
+I also tried providing a `<NativeLibrary>` item too:
+```xml
+<ItemGroup>
+  <DirectPInvoke Include="msvcr120.dll" />
+  <NativeLibrary Include="C:\WINDOWS\SYSTEM32\msvcr120.dll"/>
+</ItemGroup>
+```
+From what I understand direct P/Invokes only accept `.lib` files for Windows, meaning this `.dll` won't work. However, I'm not entirely sure at all. 
+
+I did learn that a [prepopulated list of direct P/Invoke methods that are available on all supported versions of Windows](https://github.com/dotnet/runtime/blob/main/src/coreclr/nativeaot/BuildIntegration/WindowsAPIs.txt) could help, so I started digging into those functions.
+
+The next steps were trying to understand how I can interact with the console with the methods available via Windows. In retrospect, looking at weird methods such as `[StringCbPrintfA()](https://learn.microsoft.com/en-us/windows/win32/api/strsafe/nf-strsafe-stringcbprintfa)` probably wasn't it - even if it was part of the Win32 API.
+
+In the end, it turns out there are nicer still-low-level [console functions](https://learn.microsoft.com/en-us/windows/console/console-functions) available for us. Not as simple as `printf` but more usable than some of the more raw APIs. 
+
+The functions used in the end are:
+
+| Function                                                                                                       | Summary                                                                                                             | Purpose                                                                       |
+| -------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| `[GetStdHandle()](https://learn.microsoft.com/en-us/windows/console/getstdhandle)`                             | Retrieves a handle for the standard input, standard output, or standard error device.                               | Allows us to get a handle to the console such that it can be interacted with. |
+| `[GetConsoleMode()](https://learn.microsoft.com/en-us/windows/console/getconsolemode)`                         | Retrieves the current input mode of a console's input buffer or the current output mode of a console screen buffer. | Helps setup the ANSI colouring.                                               |
+| `[SetConsoleMode()](https://learn.microsoft.com/en-us/windows/console/setconsolemode)`                         | Sets the input mode of a console's input buffer or the output mode of a console screen buffer.                      | Helps setup the ANSI colouring.                                               |
+| `[ReadConsole()](https://learn.microsoft.com/en-us/windows/console/readconsole)`                               | Reads character input from the console input buffer and removes it from the buffer.                                 | Used instead of `Console.ReadLine()`.                                         |
+| `[WriteConsole()](https://learn.microsoft.com/en-us/windows/console/writeconsole)`                             | Writes a character string to a console screen buffer beginning at the current cursor location.                      | Used instead of `Console.Write()`.                                            |
+| `[GetConsoleScreenBufferInfo()](https://learn.microsoft.com/en-us/windows/console/getconsolescreenbufferinfo)` | Retrieves information about the specified console screen buffer.                                                    | Part of the `Console.Clear()` replacement.                                    |
+| `[FillConsoleOutputCharacter()](https://learn.microsoft.com/en-us/windows/console/fillconsoleoutputcharacter)` | Writes a character to the console screen buffer a specified number of times.                                        | Part of the `Console.Clear()` replacement.                                    |
+| `[SetConsoleCursorPosition()](https://learn.microsoft.com/en-us/windows/console/setconsolecursorposition)`     | Sets the cursor position in the specified console screen buffer.                                                    | Part of the `Console.Clear()` replacement.                                    |
+
+Some points:
+- The ANSI colouring will work with Visual Studio debugging without explicitly setting it up but it will fail in the published `.exe` which is why `GetConsoleMode()` and `SetConsoleMode()` are useful.
+- Took me a second to work out how to use `ReadConsole()`. I was getting random characters at the end of my inputs. I tried flushing after reads and writes but it turns out my buffer was too small and causing a buffer overflow resulting in random characters. Sometimes it happened anyway but only after the charaters I was interested in, so I just cut out the parts I didn't need.
+- I wanted to do the `StringBuilder` replacement, it's even a code analysis point: *[CA1838: Avoid StringBuilder parameters for P/Invokes](https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1838)*, but I couldn't seem to get it to work. Might need to address this again later.
+
+So let's look at the stats. We'll do a comparison of:
+1. The code as-is for this attempt, but bringing back in `Console` to see the size
+1. This new P/Invoke work but with the prepopulated list for direct P/Invokes removed. I.E. just regular P/Invoke calls
+1. Finally, with direct P/Invoke calls
+
+| Version          | Size |
+| ---------------- | ---- |
+| Console          |      |
+| Regular P/Invoke |      |
+| Direct P/Invoke  |      |
+
+References for this one:
+- [Generating C# bindings for native Windows libraries](https://lowleveldesign.wordpress.com/2023/11/23/generating-c-bindings-for-native-windows-libraries/)
+- [Native library loading](https://learn.microsoft.com/en-us/dotnet/standard/native-interop/native-library-loading)
+- [PInvoke.net](https://www.pinvoke.net/)
+- [Native AOT application linking with external static library or object files #89044](https://github.com/dotnet/runtime/issues/89044)
+- [[NativeAot] Document DirectPInvoke's requirements #976](https://github.com/dotnet/runtimelab/issues/976)- 
+- [Another view of the direct methods](https://github.com/dotnet/runtime/blob/main/src/coreclr/nativeaot/BuildIntegration/Microsoft.NETCore.Native.Windows.targets#L63)
+- [Marshalling Data with Platform Invoke (or, which datatypes map to what)](https://learn.microsoft.com/en-us/dotnet/framework/interop/marshalling-data-with-platform-invoke)
+
+### Misc work
+
+There was also extra work put in around really small improvements in the ones or tens of bytes. 
+- Replaced the `Environment.TickCount64` with the Kernel32 call for it
+- Aggressively inlined the functions with only one caller
+
+
