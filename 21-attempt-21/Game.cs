@@ -1,4 +1,6 @@
-﻿namespace TinyWordle
+﻿using System.Runtime.CompilerServices;
+
+namespace TinyWordle
 {
     public class Game
     {
@@ -13,6 +15,7 @@
             GuessedWords = new GuessedWord[6];
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public State Guess(string guessedWord)
         {
             _attempts++;
