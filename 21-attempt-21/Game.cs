@@ -35,15 +35,11 @@
             {
                 return State.Won;
             }
-            
-           
 
             if (_attempts >= 6)
             {
                 return State.Lost;
             }
-
-                                        
 
             return State.Playing;
         }

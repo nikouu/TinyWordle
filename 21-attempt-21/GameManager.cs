@@ -5,12 +5,10 @@ namespace TinyWordle
     public class GameManager
     {
         private string[] _wordList;
-        private Random _random;
 
         public GameManager(string[] wordList)
         {
             _wordList = wordList;
-            _random = new Random((uint)Environment.TickCount64);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -33,7 +31,7 @@ namespace TinyWordle
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void GameLoop()
         {
-            var index = _random.Next() % _wordList.Length;
+            var index = Random.Next() % _wordList.Length;
             var word = _wordList[index];
 
             var game = new Game(word);

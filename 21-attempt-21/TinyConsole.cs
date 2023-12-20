@@ -7,13 +7,13 @@ namespace TinyWordle
     // A rough look at using p/invoke to replace Console
     public static class TinyConsole
     {
-        [DllImport("msvcr120.dll")]
+        [DllImport("msvcrt.dll")]
         public static extern int printf(string format);
 
-        [DllImport("msvcr120.dll")]
+        [DllImport("msvcrt.dll")]
         public static extern int system(string command);
 
-        [DllImport("msvcr120.dll")]
+        [DllImport("msvcrt.dll")]
         private static extern IntPtr gets(StringBuilder value);
 
         public static string ReadLine()

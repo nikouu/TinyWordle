@@ -23,6 +23,13 @@
   </PropertyGroup>
 
 	<ItemGroup>
-		<LinkerArg Include="/DYNAMICBASE:NO" />
+		<LinkerArg Include="/DYNAMICBASE:NO" /> 
 	</ItemGroup>
+
+  <ItemGroup>
+    
+    <!--<DirectPInvoke Include="msvcr120.dll" />
+    <NativeLibrary Include="C:\Windows\System32\msvcr120.dll" />-->
+  </ItemGroup>
+  
 </Project>
