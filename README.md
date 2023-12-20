@@ -899,6 +899,7 @@ There was also extra work put in around really small improvements in the ones or
 - Replaced the `Environment.TickCount64` with the Kernel32 call for it
 - Aggressively inlined the functions with only one caller
 
+In the end we get:
 ```
 dotnet publish -r win-x64 -c Release
 
