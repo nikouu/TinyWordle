@@ -814,7 +814,7 @@ Total binary size: 723 KB
 
 Thanks Michal!
 
-## Attempt 22 (- KB)
+## Attempt 22 (-19 KB)
 
 Michal offered another piece of advice: [Direct P/Invoke calls](https://learn.microsoft.com/en-us/dotnet/core/deploying/native-aot/interop#direct-pinvoke-calls). Regular P/Invoke calls are lazily done at run time and have a lot of checks - as we saw in Attempt 21. Direct P/Invoke calls avoid these costs by instructing the compiler to generate direct calls. What does that mean for this project? We can get rid of all those checks and continue to shrink the final binary. 
 
