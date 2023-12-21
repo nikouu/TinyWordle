@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -10,10 +9,10 @@ namespace TinyWordle
         [DllImport("kernel32")]
         static extern IntPtr GetStdHandle(int nStdHandle);
 
-        [DllImport("kernel32.dll")]
+        [DllImport("kernel32")]
         static extern bool GetConsoleMode(IntPtr hConsoleHandle, out uint lpMode);
 
-        [DllImport("kernel32.dll")]
+        [DllImport("kernel32")]
         static extern bool SetConsoleMode(IntPtr hConsoleHandle, uint dwMode);
 
         [DllImport("kernel32")]
@@ -33,11 +32,10 @@ namespace TinyWordle
 
         static TinyConsole()
         {
-            IntPtr consoleHandle = GetStdHandle(-11);
-            uint consoleMode;
+            var consoleHandle = GetStdHandle(-11);
 
             // Get the current console mode
-            GetConsoleMode(consoleHandle, out consoleMode);
+            GetConsoleMode(consoleHandle, out uint consoleMode);
 
             // Modify the console mode to enable virtual terminal processing
             consoleMode |= 0x0004;
@@ -46,19 +44,18 @@ namespace TinyWordle
 
         public static void Write(string value)
         {
-            IntPtr consoleHandle = GetStdHandle(-11);
-            uint charsWritten;
+            var consoleHandle = GetStdHandle(-11);
 
-            WriteConsole(consoleHandle, value, (uint)value.Length, out charsWritten, IntPtr.Zero);
+            WriteConsole(consoleHandle, value, (uint)value.Length, out uint charsWritten, IntPtr.Zero);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Clear()
         {
-            IntPtr hConsole = GetStdHandle(-11);
-            CONSOLE_SCREEN_BUFFER_INFO csbi;
-            GetConsoleScreenBufferInfo(hConsole, out csbi);
+            var hConsole = GetStdHandle(-11);
+            GetConsoleScreenBufferInfo(hConsole, out CONSOLE_SCREEN_BUFFER_INFO csbi);
 
-            COORD dwTopLeft = new COORD();
+            var dwTopLeft = new COORD();
            
             FillConsoleOutputCharacter(hConsole, ' ', (uint)(csbi.dwSize.X * csbi.dwSize.Y), dwTopLeft, out _);
 
@@ -67,15 +64,14 @@ namespace TinyWordle
 
         public static string ReadLine()
         {
-            IntPtr hConsoleInput = GetStdHandle(-10);
-            StringBuilder buffer = new StringBuilder(512*8);
-            uint charsRead;
+            var hConsoleInput = GetStdHandle(-10);
+            var buffer = new StringBuilder(1024);
 
-            ReadConsole(hConsoleInput, buffer, (uint)buffer.Capacity, out charsRead, IntPtr.Zero);
+            ReadConsole(hConsoleInput, buffer, (uint)buffer.Capacity, out uint charsRead, IntPtr.Zero);
 
-            string input = buffer.ToString().TrimEnd();
+            var input = buffer.ToString();
 
-            return input;
+            return input.Length <= 5 ? input : input[..5];
         }
 
         struct COORD

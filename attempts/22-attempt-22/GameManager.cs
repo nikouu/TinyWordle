@@ -82,18 +82,18 @@ namespace TinyWordle
                 {
                     foreach (var guessedLetter in guessedWord.GuessedLetters)
                     {
+                        var ansiColour = "\u001b[48;2;128;128;127m";
+
                         if (guessedLetter.IsCorrect)
                         {
-                            TinyConsole.Write($"\u001b[48;2;0;127;0m{guessedLetter.Letter}\x1B[0m");
+                            ansiColour = "\u001b[48;2;0;127;0m";
                         }
                         else if (guessedLetter.IsRightLetterWrongPlace)
                         {
-                            TinyConsole.Write($"\u001b[48;2;128;128;0m{guessedLetter.Letter}\x1B[0m");
+                            ansiColour = "\u001b[48;2;128;128;0m";
                         }
-                        else
-                        {
-                            TinyConsole.Write($"\u001b[48;2;128;128;127m{guessedLetter.Letter}\x1B[0m");
-                        }
+
+                        TinyConsole.Write($"{ansiColour}{guessedLetter.Letter}\u001b[0m");
                     }
 
                     TinyConsole.Write("\r\n");
