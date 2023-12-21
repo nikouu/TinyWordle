@@ -93,7 +93,9 @@ namespace TinyWordle
                             ansiColour = "\u001b[48;2;128;128;0m";
                         }
 
-                        TinyConsole.Write($"{ansiColour}{guessedLetter.Letter}\u001b[0m");
+                        // Doing the interolation simplification brings in methods to append chars
+                        // taking a ToString() makes the concatenation very simple code
+                        TinyConsole.Write($"{ansiColour}{guessedLetter.Letter.ToString()}\u001b[0m");
                     }
 
                     TinyConsole.Write("\r\n");
