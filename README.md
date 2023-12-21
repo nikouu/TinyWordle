@@ -814,7 +814,9 @@ Total binary size: 723 KB
 
 Thanks Michal!
 
-## Attempt 22 (-19 KB)
+## Attempt 22 (-20 KB)
+
+### Direct P/Invoke (-19 KB)
 
 Michal offered another piece of advice: [Direct P/Invoke calls](https://learn.microsoft.com/en-us/dotnet/core/deploying/native-aot/interop#direct-pinvoke-calls). Regular P/Invoke calls are lazily done at run time and have a lot of checks - as we saw in Attempt 21. Direct P/Invoke calls avoid these costs by instructing the compiler to generate direct calls. What does that mean for this project? We can get rid of all those checks and continue to shrink the final binary. 
 
@@ -893,17 +895,19 @@ References for this one:
 - [Another view of the direct methods](https://github.com/dotnet/runtime/blob/main/src/coreclr/nativeaot/BuildIntegration/Microsoft.NETCore.Native.Windows.targets#L63)
 - [Marshalling Data with Platform Invoke (or, which datatypes map to what)](https://learn.microsoft.com/en-us/dotnet/framework/interop/marshalling-data-with-platform-invoke)
 
-### Misc work
+### Misc work (-1 KB)
 
-There was also extra work put in around really small improvements in the ones or tens of bytes. 
+There was also extra work put in around really small improvements in the ones or tens of bytes but it rounds to about 1 KB according to the file system.
 - Replaced the `Environment.TickCount64` with the Kernel32 call for it
 - Aggressively inlined the functions with only one caller
+- Removed unnecessary function calls by just updating a variable then calling a function at the end of the branches, instead of function calling in each branch. (Found while staring at ILSpy)
+- Removed functions related to complex string interpolations by ensuring everything being interpolated is a `string` (as opposed to a `char`) (Found while staring at ILSpy)
 
 In the end we get:
 ```
 dotnet publish -r win-x64 -c Release
 
-Total binary size: 704 KB
+Total binary size: 703 KB
 ```
 
 Thanks again Michal!
