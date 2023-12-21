@@ -871,7 +871,7 @@ Some points:
 - I wanted to do the `StringBuilder` replacement, it's even a code analysis point: *[CA1838: Avoid StringBuilder parameters for P/Invokes](https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1838)*, but I couldn't seem to get it to work. Might need to address this again later.
 
 So let's look at the stats. We'll do a comparison of:
-1. The code as-is for this attempt, but bringing back in `Console` to see the size
+1. Bringing back in `Console` in place of this P/Invoke work. This gives us a baseline.
 1. This new P/Invoke work but with the prepopulated list for direct P/Invokes removed. I.E. just regular P/Invoke calls. For me this is under `%UserProfile%\.nuget\packages\microsoft.dotnet.ilcompiler\8.0.0\build\WindowsAPIs.txt`
 1. Finally, with direct P/Invoke calls
 
