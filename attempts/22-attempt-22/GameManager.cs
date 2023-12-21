@@ -5,6 +5,9 @@ namespace TinyWordle
     public class GameManager
     {
         private string[] _wordList;
+        private int _attempts;
+        private string _word;
+        public GuessedWord[] GuessedWords { get; private set; }
 
         public GameManager(string[] wordList)
         {
@@ -32,14 +35,14 @@ namespace TinyWordle
         private void GameLoop()
         {
             var index = Random.Next() % _wordList.Length;
-            var word = _wordList[index];
+            _word = _wordList[index];
+            _attempts = 0;
+            GuessedWords = new GuessedWord[6];
 
-            var game = new Game(word);
-
-            DisplayGame(game.GuessedWords);
+            DisplayGame();
 
 #if DEBUG
-            Console.WriteLine(word);
+            Console.WriteLine(_word);
 #endif
 
             while (true)
@@ -51,8 +54,8 @@ namespace TinyWordle
                     continue;
                 }
 
-                var result = game.Guess(guessedWord);
-                DisplayGame(game.GuessedWords);
+                var result = Guess(guessedWord);
+                DisplayGame();
 
                 if (result == State.Won)
                 {
@@ -67,28 +70,59 @@ namespace TinyWordle
             }
         }
 
-        public void DisplayGame(GuessedWord[] guessedWords)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public State Guess(string guessedWord)
+        {
+            _attempts++;
+            GuessedWords[_attempts - 1] = new GuessedWord
+            {
+                Word = guessedWord,
+                GuessedLetters =
+                [
+                    new GuessedLetter(guessedWord[0]),
+                    new GuessedLetter(guessedWord[1]),
+                    new GuessedLetter(guessedWord[2]),
+                    new GuessedLetter(guessedWord[3]),
+                    new GuessedLetter(guessedWord[4])
+                ]
+            };
+
+            if (guessedWord == _word)
+            {
+                return State.Won;
+            }
+
+            if (_attempts >= 6)
+            {
+                return State.Lost;
+            }
+
+            return State.Playing;
+        }
+
+        public void DisplayGame()
         {
             TinyConsole.Clear();
             TinyConsole.Write("TinyWordle\r\n");
 
-            foreach (GuessedWord guessedWord in guessedWords)
+            foreach (GuessedWord guessedWord in GuessedWords)
             {
                 if (guessedWord.Word == null)
                 {
                     TinyConsole.Write("#####\r\n");
                 }
                 else
-                {
-                    foreach (var guessedLetter in guessedWord.GuessedLetters)
+                {                    
+                    for (int i = 0; i < 5; i++)
                     {
+                        var guessedLetter = guessedWord.GuessedLetters[i];
                         var ansiColour = "\u001b[48;2;128;128;127m";
 
-                        if (guessedLetter.IsCorrect)
+                        if (guessedLetter.IsCorrect(_word[i]))
                         {
                             ansiColour = "\u001b[48;2;0;127;0m";
                         }
-                        else if (guessedLetter.IsRightLetterWrongPlace)
+                        else if (guessedLetter.IsRightLetterWrongPlace(_word))
                         {
                             ansiColour = "\u001b[48;2;128;128;0m";
                         }
