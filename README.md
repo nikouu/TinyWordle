@@ -1,4 +1,4 @@
-# TinyWordle: 62,091 KB to 1,011 KB (Now 703 KB!)
+# TinyWordle: 62,091 KB to 1,011 KB (Now 680 KB!)
 A C# console clone of Wordle, but with an attempt to make the binary really tiny. 
 
 👉 [Check out my writeup on my blog!](https://www.nikouusitalo.com/blog/shrinking-a-self-contained-net-6-wordle-clone-executable/)👈
@@ -911,3 +911,15 @@ Total binary size: 703 KB
 ```
 
 Thanks again Michal!
+
+## Attempt 23 (-23 KB)
+
+.NET 9 is here! 
+
+Using the same code as attempt 22 we get good progress out of the box.
+
+```
+dotnet publish -r win-x64 -c Release
+
+Total binary size: 680 KB
+```
