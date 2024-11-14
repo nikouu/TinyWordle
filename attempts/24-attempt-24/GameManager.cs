@@ -7,7 +7,7 @@ namespace TinyWordle
         private string[] _wordList;
         private int _attempts;
         private string _word;
-        public GuessedWord[] GuessedWords { get; private set; }
+        private GuessedWord[] _guessedWords;
 
         public GameManager(string[] wordList)
         {
@@ -37,7 +37,7 @@ namespace TinyWordle
             var index = Random.Next() % _wordList.Length;
             _word = _wordList[index];
             _attempts = 0;
-            GuessedWords = new GuessedWord[6];
+            _guessedWords = new GuessedWord[6];
 
             DisplayGame();
 
@@ -74,7 +74,7 @@ namespace TinyWordle
         public State Guess(string guessedWord)
         {
             _attempts++;
-            GuessedWords[_attempts - 1] = new GuessedWord
+            _guessedWords[_attempts - 1] = new GuessedWord
             {
                 Word = guessedWord,
                 GuessedLetters =
@@ -105,7 +105,7 @@ namespace TinyWordle
             TinyConsole.Clear();
             TinyConsole.Write("TinyWordle\r\n");
 
-            foreach (GuessedWord guessedWord in GuessedWords)
+            foreach (GuessedWord guessedWord in _guessedWords)
             {
                 if (guessedWord.Word == null)
                 {
@@ -127,7 +127,7 @@ namespace TinyWordle
                             ansiColour = "\u001b[48;2;128;128;0m";
                         }
 
-                        // Doing the interolation simplification brings in methods to append chars
+                        // Doing the interpolation simplification brings in methods to append chars
                         // taking a ToString() makes the concatenation very simple code
                         TinyConsole.Write($"{ansiColour}{guessedLetter.Letter.ToString()}\u001b[0m");
                     }

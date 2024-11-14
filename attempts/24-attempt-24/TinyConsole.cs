@@ -46,7 +46,7 @@ namespace TinyWordle
         {
             var consoleHandle = GetStdHandle(-11);
 
-            WriteConsole(consoleHandle, value, (uint)value.Length, out uint charsWritten, IntPtr.Zero);
+            WriteConsole(consoleHandle, value, (uint)value.Length, out uint _, IntPtr.Zero);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -67,7 +67,7 @@ namespace TinyWordle
             var hConsoleInput = GetStdHandle(-10);
             var buffer = new StringBuilder(1024);
 
-            ReadConsole(hConsoleInput, buffer, (uint)buffer.Capacity, out uint charsRead, IntPtr.Zero);
+            ReadConsole(hConsoleInput, buffer, (uint)buffer.Capacity, out uint _, IntPtr.Zero);
 
             var input = buffer.ToString();
 
