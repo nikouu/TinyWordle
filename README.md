@@ -923,3 +923,59 @@ dotnet publish -r win-x64 -c Release
 
 Total binary size: 680 KB
 ```
+
+## Attempt 24
+
+### Removing string interpolation (-0 KB)
+
+Looked at Sizoscope to see what the structure is now that the code is in .NET 9 and seeing whether some pieces can be removed, as as in Attempt 11. Noticed there were a couple of string methods that seemingly only my code was using. The most complex string work in the project:
+```csharp
+// Doing the interpolation simplification brings in methods to append chars
+// taking a ToString() makes the concatenation very simple code
+TinyConsole.Write($"{ansiColour}{guessedLetter.Letter.ToString()}\u001b[0m");
+```
+
+Previously that had been crafted specifically to reduce the size of the binary. However it seems it's now bringing in some `ReadOnlySpan<char>` overloads - makes sense because we normally want good peformance and we get it implicitly. However in this case changing it to a class `string.Format()` removes a `string.Concat()` overload. The new code looks like:
+
+```csharp
+TinyConsole.Write(string.Format("{0}{1}\u001b[0m", ansiColour, guessedLetter.Letter.ToString()));
+```
+
+Looking at Sizoscope, the size had reduced by -326 bytes. However, I'm going by what the value is on disk, meaning the value is the same as it was before. I assume this is to do with padding.
+
+![sizoscope](images/Attempt24.1-sizoscope.png)
+
+Then using ILSpy, we can look at the differences in the string heap within the DLL metadata. I admit I don't fully understand the next parts, but they're fun!
+
+First up, the string differences. The old verison had a frozen string (baked-in const I'm pretty sure) of 30 bytes. The new one has a 42 byte frozen string instead. 
+
+Looking at the frozen objects in Sizoscope, I can see in the old version there is a 30 B string related to the method that was modified that isn't in the new version - just like the compare says. Similarly, there is a 42 B string that is only in the new version. Seems the string is now bigger by 12 bytes. Below shows the different string instances and their locations. A bit hard to work it out, I know.
+
+![sizoscope2](images/Attempt24.1-sizoscope-frozen.png)
+
+So what is the string that changed? We can use ILSpy to see, and this is where I continue my lack of understanding.
+
+The string heap has one less string in the new version: `ReadOnlySpan'1`. Which I have to assume is because the `ReadOnlySpan` overload of concat is gone.
+
+Then the user string heap has a different value because of the new formatting string:
+
+![userstringheap](images/Attempt24.1-userstringheap.png)
+
+I don't know how the maths work out:
+1. How is the original length 4 string 30 bytes?
+2. How is the new length 10 string just 12 bytes more?
+
+This'll be a mystery to solve another day. It might also be worth seeing how to remove some of the frozen strings in the future too.
+
+### Removing the `ToString()` (-0 KB)
+
+Making 
+```csharp
+TinyConsole.Write(string.Format("{0}{1}\u001b[0m", ansiColour, guessedLetter.Letter.ToString()));
+```
+
+```csharp
+TinyConsole.Write(string.Format("{0}{1}\u001b[0m", ansiColour, guessedLetter.Letter));
+```
+
+Sizoscope says -15 B, but no change in the binary on disk. Hopefully these little bits will add up in the future.
